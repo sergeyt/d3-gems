@@ -1,0 +1,35 @@
+{
+  "name": "d3-charts",
+  "version": "0.0.0",
+  "description": "Stupid charts powered by d3js",
+  "author": "Sergey Todyshev <stodyshev@gmail.com>",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sergeyt/d3-charts.git"
+  },
+  "keywords": [
+    "d3",
+    "d3js",
+    "chart"
+  ],
+  "contributors": [
+    "Sergey Todyshev <stodyshev@gmail.com>"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.7.1",
+    "grunt-coffeelint": "0.0.8",
+    "grunt-npm": "~0.0.2",
+    "grunt-bump": "~0.0.7",
+    "grunt-auto-release": "~0.0.2",
+    "grunt-cli": "~0.1.11",
+    "expect.js": "~0.2.0"
+  },
+  "scripts": {
+    "lint": "grunt lint",
+    "test": "grunt test"
+  }
+}
