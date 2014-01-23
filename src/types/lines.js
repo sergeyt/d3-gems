@@ -2,9 +2,9 @@
 
 	d3.chart.lines = function(){
 
-		var renderer = function(canvas, context, def){
+		function renderer(canvas, ctx){
 
-		};
+		}
 
 		renderer.init = function(def){
 

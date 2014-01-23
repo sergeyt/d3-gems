@@ -28,7 +28,6 @@
 // TODO renderer based on chart type (should be easy extensible)
 // TODO legend, could be a separate HTML widget
 
-
 (function() {
 
 // d3 chart plugin
@@ -40,21 +39,50 @@ d3.chart = function() {
 	function chart(element) {
 		element.each(function(def) {
 
-			// TODO create div container for chart elements (title, legend, svg)
-
-			var canvas = d3.select(this);
 			var renderer = d3.chart.renderer(def);
+			var ctx = renderer.init(def);
+			ctx = _.extend(ctx, {def: def, renderer: renderer});
 
-			// preprocess data to calculate min, max, etc
-			var context = renderer.init(def);
+			// prepare axes factories
+			d3.chart.axes(ctx);
 
-			// render plot area
-			plotarea = d3.chart.plotarea(canvas, width, height);
+			// TODO create div container for chart elements (title, legend, svg)
+			// TODO chart layout
 
-			// render series
-			renderer(canvas, context, def);
+			var layout = {
+				width: width,
+				height: height,
+				margin: {
+					left: 0,
+					top: 0,
+					right: 0,
+					bottom: 0
+				}
+			};
 
-			// TODO render axes
+			ctx = _.extend(ctx, {layout: layout});
+
+			d3.select(this).selectAll('svg').remove();
+
+			// append svg
+			var svg = d3.select(this).selectAll('svg')
+				.data([ctx]).enter()
+				.append('svg')
+				.style('display', 'block')
+				.attr('width', layout.width)
+				.attr('height', layout.height);
+
+			var plot = d3.chart.plot()
+				.width(layout.width - layout.margin.left - layout.margin.right)
+				.height(layout.height - layout.margin.top - layout.margin.bottom);
+
+			// append and render plotarea
+			svg.append('g')
+				.attr('transform', 'translate(' + layout.margin.left + ',' + layout.margin.top + ')')
+				.call(plot);
+
+			// TODO return svg container
+			return svg;
 		});
 	}
 
