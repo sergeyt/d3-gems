@@ -27,7 +27,7 @@ module.exports = (grunt) ->
 					module: true,
 					require: true
 			all:
-				src: ['*.js', 'src/*.js']
+				src: ['*.js', 'src/**/*.js']
 
 		coffeelint:
 			options:
