@@ -9,11 +9,6 @@
 		function plot(element) {
 			element.each(function(ctx) {
 
-				var canvas = d3.select(this);
-
-				// render plot area
-				d3.chart.plotarea(canvas, width, height);
-
 				ctx.width = width;
 				ctx.height = height;
 				ctx.scales = {
@@ -21,10 +16,15 @@
 					y: ctx.axes.y.scale(height)
 				};
 
-				// render series
-				ctx.renderer(canvas, ctx);
+				ctx.canvas = d3.select(this);
 
-				// TODO render axes
+				// render plot area
+				d3.chart.plotarea(ctx);
+
+				// render series
+				ctx.renderer(ctx);
+
+				d3.chart.render_axes(ctx);
 			});
 		}
 

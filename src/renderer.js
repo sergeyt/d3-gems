@@ -6,9 +6,9 @@
 		var type = (def.type || 'column').toLowerCase();
 		switch (type) {
 			case 'line':
-				return d3.chart.lines();
+				return d3.line_chart();
 			default:
-				return d3.chart.columns();
+				return d3.bar_chart();
 		}
 	};
 

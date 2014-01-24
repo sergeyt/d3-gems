@@ -1,8 +1,9 @@
 (function(){
 
-	d3.chart.lines = function(){
+	// rendering of line-based charts
+	d3.line_chart = function(){
 
-		function renderer(canvas, ctx){
+		function renderer(ctx){
 
 		}
 

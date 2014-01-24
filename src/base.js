@@ -36,8 +36,8 @@ d3.chart = function() {
 	var width = 300;
 	var height = 200;
 
-	function chart(element) {
-		element.each(function(def) {
+	function chart(selection) {
+		selection.each(function(def) {
 
 			var renderer = d3.chart.renderer(def);
 			var ctx = renderer.init(def);

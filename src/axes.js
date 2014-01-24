@@ -6,7 +6,7 @@
 		var def = ctx.def;
 		var xaxis = {
 			ticks: null,
-			scalar: def.xaxis && def.xaxis.scalar,
+			scalar: def.xaxis && !!def.xaxis.scalar,
 			is_time: ctx.categories.filter(_.isDate).length > 0,
 			create: create_xaxis
 		};
@@ -22,7 +22,6 @@
 		};
 
 		xaxis.scale = create_xscale(ctx, xaxis);
-		yaxis.scale = create_yscale(ctx);
 	};
 
 	function create_xscale(ctx, xaxis){
@@ -64,11 +63,12 @@
 		};
 	}
 
-	function create_xaxis(ctx, scale) {
+	function create_xaxis(ctx) {
 		var axis = d3.svg.axis()
-			.scale(scale)
+			.scale(ctx.scales.x)
 			.orient('bottom')
 			.tickSize(3);
+
 		var config = ctx.axes.x;
 		if (config.ticks !== null) {
 			if ($.isNumeric(config.ticks)) {
@@ -77,12 +77,13 @@
 				axis.ticks.apply(axis, config.ticks);
 			}
 		}
+
 		return axis;
 	}
 
-	function create_yaxis(ctx, scale) {
+	function create_yaxis(ctx) {
 		return d3.svg.axis()
-			.scale(scale)
+			.scale(ctx.scales.y)
 			.orient('left')
 			.tickSize(3);
 	}

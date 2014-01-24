@@ -1,0 +1,38 @@
+.chart .title {
+	stroke: none;
+	fill: black;
+}
+
+.chart .plotarea {
+	fill: none;
+}
+
+.chart .line {
+	fill: none;
+	stroke: black;
+	stroke-width: 1px;
+}
+
+.axis, .xaxis, .yaxis {
+	stroke: black;
+	stroke-width: 1px;
+}
+
+.axis .domain, .axis .tick line {
+	fill: none;
+	shape-rendering: crispEdges;
+}
+
+.xaxis .domain, .xaxis .tick line {
+	fill: none;
+	shape-rendering: crispEdges;
+}
+
+.yaxis .domain, .yaxis .tick line {
+	fill: none;
+	shape-rendering: crispEdges;
+}
+
+.axis text, .xaxis text, .yaxis text {
+	stroke: none;
+}
