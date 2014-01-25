@@ -24,8 +24,6 @@
 //	}
 //}
 
-// TODO create axes
-// TODO renderer based on chart type (should be easy extensible)
 // TODO legend, could be a separate HTML widget
 
 (function() {
@@ -77,6 +75,10 @@ d3.chart = function() {
 				.style('display', 'block')
 				.attr('width', layout.width)
 				.attr('height', layout.height);
+
+			// init tip function
+			ctx.svg = svg;
+			ctx.tip = d3.chart.tip(ctx);
 
 			var plot = d3.chart.plot()
 				.width(layout.width - layout.margin.left - layout.margin.right)

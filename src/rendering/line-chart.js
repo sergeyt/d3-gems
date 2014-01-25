@@ -19,7 +19,8 @@
 			var g = ctx.canvas.selectAll("g.line")
 				.data(ctx.data).enter()
 				.append("g")
-				.classed("line", true);
+				.classed("line", true)
+				.attr("data-series", function (d, i) { return i; });
 
 			g.append("path")
 				.attr("class", function (d, i) { return "pal" + i; })
@@ -28,20 +29,20 @@
 
 			// data points with tooltip
 			g.selectAll("circle.point")
-				.data(function(d, i) { return d.map(function(v) { return { s: i, y: v }; }); })
+				.data(function(d, i) { return d.map(function(val) { return { x: i, y: val }; }); })
 				.enter()
 				.append("circle")
-				.attr("class", function (d) { return "pal" + d.s; })
+				.attr("class", function (d) { return "pal" + d.x; })
 				.classed("point", true)
 				.attr("cx", function(d, i) { return translate_x(d, i); })
 				.attr("cy", function(d) { return y(d.y); })
 				.attr("r", 1.5)
 				.style("stroke", "none")
 				.attr("title", function(d, i) {
-					var category = d3.internal.title(ctx.categories[i], ctx.axes.y);
+					var category = d3.internal.title(ctx.categories[i], ctx.axes.x);
 					return category + ": " + d3.internal.title(d.y, ctx.axes.y);
 				})
-				.each(d3.chart.tip);
+				.each(ctx.tip);
 		}
 
 		renderer.init = function(def){

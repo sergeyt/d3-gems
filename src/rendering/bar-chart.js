@@ -33,6 +33,7 @@ d3.bar_chart = function(){
 			.data(function(d) { return d; })
 			.enter().append("rect")
 			.attr("class", function(d, i) { return "pal" + i; })
+			.attr("data-series", function(d, i) { return i; })
 			.classed("bar", true)
 			.attr("x", function(d, i) { return x1(i); })
 			.attr("y", function(d) { return d.y < 0 ? y0 : y(d.y); })
@@ -43,7 +44,7 @@ d3.bar_chart = function(){
 				var category = d3.internal.title(ctx.categories[d.x], ctx.xaxis);
 				return category + ": " + d3.internal.title(d.y, ctx.yaxis);
 			})
-			.each(d3.chart.tip)
+			.each(ctx.tip)
 			.each(function (d, i) {
 				if (series.has(i)) return;
 				series.set(i, true);
