@@ -16,7 +16,7 @@
 			width: 800px;
 		}
 
-		.chart { font-size: 10pt; }
+		.chart { font-size: 10pt; padding: 10px; }
 		.chart .xaxis { font-size: 7pt; }
 		.chart .yaxis { font-size: 7pt; }
 		.outlined { border: lightgrey solid 1pt; }
@@ -49,7 +49,7 @@
 
 	<script type="text/javascript">
 		$(function(){
-			var chart = {
+			var column_chart = {
 				type: "column",
 				subtype: "plain",
 				axes: {
@@ -75,8 +75,37 @@
 					"position": "topcenter"
 				}
 			};
+
+			var line_chart = {
+				type: "line",
+				subtype: "plain",
+				axes: {
+					x: { majorTicks: "outside" },
+					y: {
+						majorTicks: "outside",
+						scalar: true,
+						margin: true,
+						grid: { major: true, minor: false }
+					}
+				},
+				categories: ["A", "B", "A"],
+				series: ["Revenue", "Units"],
+				data: [
+					[90, 70, 95],
+					[55, 80, 67]
+				],
+				title: {
+					text: "Test Chart",
+					position: "center"
+				},
+				legend: {
+					position: "topcenter"
+				}
+			};
+
 			window.__charts__ = {
-				'first': chart
+				'cols': column_chart,
+				'lines': line_chart
 			};
 
 			$('.chart').chart();
@@ -84,6 +113,7 @@
 	</script>
 </head>
 <body>
-	<div class="chart" style="width: 500px; height: 300px;" data-chart="first"></div>
+	<div class="chart" style="width: 500px; height: 300px;" data-chart="cols"></div>
+	<div class="chart" style="width: 500px; height: 300px;" data-chart="lines"></div>
 </body>
 </html>
