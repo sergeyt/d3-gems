@@ -67,6 +67,7 @@
 			}
 			return {
 				categories: categories,
+				is_ordinal: true,
 				min: min,
 				max: max,
 				data: data
