@@ -22,9 +22,6 @@ d3.bar_chart = function(){
 			return ctx.axes.x.scalar ? x(ctx.categories[i]) - groupWidth/2 : x(i);
 		}
 
-		// title attr generator
-		var title = d3.internal.title;
-
 		var group = ctx.canvas.selectAll("g.colgroup")
 			.data(data)
 			.enter().append("g")
@@ -43,8 +40,8 @@ d3.bar_chart = function(){
 			.attr("height", function(d) { return d.y < 0 ? y(d.y) - y0 : height - h0 - y(d.y); })
 			.style("stroke", "none")
 			.attr("title", function(d) {
-				var category = title(ctx.categories[d.x], ctx.xaxis);
-				return category + ": " + title(d.y, ctx.yaxis);
+				var category = d3.internal.title(ctx.categories[d.x], ctx.xaxis);
+				return category + ": " + d3.internal.title(d.y, ctx.yaxis);
 			})
 			.each(d3.chart.tip)
 			.each(function (d, i) {
