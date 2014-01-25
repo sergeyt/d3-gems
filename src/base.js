@@ -41,17 +41,23 @@ d3.chart = function() {
 
 			var renderer = d3.chart.renderer(def);
 			var ctx = renderer.init(def);
-			ctx = _.extend(ctx, {def: def, renderer: renderer});
+			ctx = _.extend(ctx, {
+				def: def,
+				renderer: renderer,
+				container: this
+			});
 
 			// prepare axes factories
 			d3.chart.axes(ctx);
+
+			var title = d3.chart.title(ctx);
 
 			// TODO create div container for chart elements (title, legend, svg)
 			// TODO chart layout
 
 			var layout = {
 				width: width,
-				height: height,
+				height: height - title.height,
 				margin: {
 					left: 50,
 					top: 50,
