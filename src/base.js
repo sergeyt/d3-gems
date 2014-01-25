@@ -53,10 +53,10 @@ d3.chart = function() {
 				width: width,
 				height: height,
 				margin: {
-					left: 0,
-					top: 0,
-					right: 0,
-					bottom: 0
+					left: 50,
+					top: 50,
+					right: 50,
+					bottom: 50
 				}
 			};
 
