@@ -6,9 +6,17 @@
 
 		if (chartProvider === undefined){
 			chartProvider = function(e){
+				var data = $(e).data('chart');
+				if (typeof data === 'string'){
+					return window.__charts__[data];
+				}
+				if (typeof data === 'object'){
+					return data;
+				}
 				// TODO stub chart when no chart definition
-				var name = $(e).data('chart');
-				return window.__charts__[name];
+				return {
+					data: []
+				};
 			};
 		}
 
