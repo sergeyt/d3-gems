@@ -18,7 +18,7 @@ d3.bar_chart = function(){
 		var y0 = min < 0 ? y(0) : y(min);
 		var h0 = height - y0;
 
-		function translateX(d, i) {
+		function translate_x(d, i) {
 			return ctx.axes.x.scalar ? x(ctx.categories[i]) - groupWidth/2 : x(i);
 		}
 
@@ -26,7 +26,7 @@ d3.bar_chart = function(){
 			.data(data)
 			.enter().append("g")
 			.attr("class", "colgroup")
-			.attr("transform", function(d, i) { return "translate(" + translateX(d, i) + ",0)"; });
+			.attr("transform", function(d, i) { return "translate(" + translate_x(d, i) + ",0)"; });
 
 		var series = d3.map();
 		group.selectAll("rect.bar")

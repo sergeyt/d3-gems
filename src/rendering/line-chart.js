@@ -26,17 +26,7 @@ d3.line_chart = function(){
 			.attr("d", function (d) { return line(d); });
 
 		// data points with tooltip
-		g.selectAll("circle.point")
-			.data(function(d, i) { return d.map(function(val) { return { x: i, y: val }; }); })
-			.enter()
-			.append("circle")
-			.attr("class", function (d) { return "pal" + d.x; })
-			.classed("point", true)
-			.attr("cx", function(d, i) { return translate_x(d, i); })
-			.attr("cy", function(d) { return y(d.y); })
-			.attr("r", 1.5)
-			.style("stroke", "none")
-			.each(ctx.tip);
+		d3.chart.points(ctx, g);
 	}
 
 	renderer.init = function(ctx){

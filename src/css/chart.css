@@ -10,8 +10,10 @@
 .chart .line {
 	fill: none;
 	stroke: black;
-	stroke-width: 1px;
+	stroke-width: 2px;
 }
+
+/* axis styles */
 
 .axis, .xaxis, .yaxis {
 	stroke: black;
