@@ -47,10 +47,7 @@
 			var data = [];
 			for (var i = 0; i < def.series.length; i++) {
 
-				var series = def.data[i].map(function(pt) {
-					// TODO support objects, functions
-					return pt;
-				});
+				var series = get_series(def, i);
 
 				var e = d3.extent(series);
 				if (isNaN(min)) {
@@ -69,6 +66,13 @@
 				data: data
 			};
 		};
+
+		function get_series(def, i){
+			return def.data[i].map(function(pt) {
+				// TODO support objects, functions
+				return pt;
+			});
+		}
 
 		return renderer;
 	};

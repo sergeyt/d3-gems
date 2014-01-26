@@ -4,18 +4,18 @@
 	d3.chart.tip = function(ctx) {
 
 		function series_index(){
+			function parse(e){
+				var series = e.data('series');
+				if (series !== undefined){
+					var i = parseInt(series);
+					return isNaN(i) ? undefined : i;
+				}
+				return undefined;
+			}
+
 			var $this = $(this);
-			var series = $this.data('series');
-			if (series !== undefined){
-				var i = parseInt(series);
-				return isNaN(i) ? undefined : i;
-			}
-			series = $this.parent('g[data-series]').data('series');
-			if (series !== undefined){
-				var i = parseInt(series);
-				return isNaN(i) ? undefined : i;
-			}
-			return undefined;
+			var val = parse($this);
+			return val !== undefined ? val : parse($this.parent('g[data-series]'));
 		}
 
 		// TODO allow usage of custom tooltips like jquery tipsy

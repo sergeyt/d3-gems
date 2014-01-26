@@ -21,6 +21,6 @@
 			element: element,
 			height: element.outerHeight()
 		};
-	}
+	};
 
 })();

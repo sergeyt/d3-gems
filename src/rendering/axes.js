@@ -78,7 +78,7 @@
 				y: yview
 			}
 		};
-	}
+	};
 
 	function arrange_category_axis(ctx, axis, view) {
 
@@ -86,7 +86,7 @@
 
 		var categories = ctx.categories;
 		var labels = view.selectAll('text');
-		if (labels.length == 0 || categories.length < 2) return;
+		if (labels.length === 0 || categories.length < 2) return;
 
 		var bounds = labels[0].map(function(e) { return e.getBBox(); });
 		var maxWidth = d3.max(bounds, function (r){ return r.width; });
