@@ -1,17 +1,18 @@
 {
-  "name": "d3-charts",
+  "name": "d3-gems",
   "version": "0.0.0",
   "description": "Stupid charts powered by d3js",
   "author": "Sergey Todyshev <stodyshev@gmail.com>",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:sergeyt/d3-charts.git"
+    "url": "git@github.com:sergeyt/d3-gems.git"
   },
   "keywords": [
     "d3",
     "d3js",
-    "chart"
+    "chart",
+	"widget"
   ],
   "contributors": [
     "Sergey Todyshev <stodyshev@gmail.com>"

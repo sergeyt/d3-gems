@@ -1,4 +1,3 @@
-d3-charts
-=========
+# d3-gems
 
-Stupid charts powered by d3js
+D3.js widgets
