@@ -38,15 +38,11 @@
 				.attr("cy", function(d) { return y(d.y); })
 				.attr("r", 1.5)
 				.style("stroke", "none")
-				.attr("title", function(d, i) {
-					var category = d3.internal.title(ctx.categories[i], ctx.axes.x);
-					return category + ": " + d3.internal.title(d.y, ctx.axes.y);
-				})
 				.each(ctx.tip);
 		}
 
-		renderer.init = function(def){
-			var categories = def.categories;
+		renderer.init = function(ctx){
+			var def = ctx.def;
 			var min = NaN, max = NaN;
 			var data = [];
 			for (var i = 0; i < def.series.length; i++) {
@@ -67,7 +63,6 @@
 				data.push(series);
 			}
 			return {
-				categories: categories,
 				is_ordinal: true,
 				min: min,
 				max: max,

@@ -7,6 +7,8 @@
 		switch (type) {
 			case 'line':
 				return d3.line_chart();
+			case 'area':
+				return d3.area_chart();
 			default:
 				return d3.bar_chart();
 		}

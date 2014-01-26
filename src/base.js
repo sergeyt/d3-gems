@@ -37,13 +37,14 @@ d3.chart = function() {
 	function chart(selection) {
 		selection.each(function(def) {
 
-			var renderer = d3.chart.renderer(def);
-			var ctx = renderer.init(def);
-			ctx = _.extend(ctx, {
+			var ctx = {
 				def: def,
-				renderer: renderer,
-				container: this
-			});
+				container: this,
+				categories: typeof def.categories == 'function' ? def.categories() : def.categories
+			};
+
+			ctx.renderer = d3.chart.renderer(def);
+			ctx = _.extend(ctx, ctx.renderer.init(ctx));
 
 			// prepare axes factories
 			d3.chart.axes(ctx);

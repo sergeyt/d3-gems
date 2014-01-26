@@ -44,13 +44,13 @@
 	<script src="../src/rendering/axes.js"></script>
 	<script src="../src/rendering/bar-chart.js"></script>
 	<script src="../src/rendering/line-chart.js"></script>
+	<script src="../src/rendering/area-chart.js"></script>
 	<script src="../src/jquery-plugin.js"></script>
 
 	<script type="text/javascript">
 		$(function(){
 			var column_chart = {
 				type: "column",
-				subtype: "plain",
 				axes: {
 					x: {majorTicks: "outside"},
 					y: {
@@ -77,7 +77,32 @@
 
 			var line_chart = {
 				type: "line",
-				subtype: "plain",
+				axes: {
+					x: { majorTicks: "outside" },
+					y: {
+						majorTicks: "outside",
+						scalar: true,
+						margin: true,
+						grid: { major: true, minor: false }
+					}
+				},
+				categories: ["A", "B", "A"],
+				series: ["Revenue", "Units"],
+				data: [
+					[90, 70, 95],
+					[55, 80, 67]
+				],
+				title: {
+					text: "Test Chart",
+					position: "center"
+				},
+				legend: {
+					position: "topcenter"
+				}
+			};
+
+			var area_chart = {
+				type: "area",
 				axes: {
 					x: { majorTicks: "outside" },
 					y: {
@@ -103,8 +128,9 @@
 			};
 
 			window.__charts__ = {
-				'cols': column_chart,
-				'lines': line_chart
+				'column': column_chart,
+				'line': line_chart,
+				'area': area_chart
 			};
 
 			$('.chart').chart();
@@ -112,7 +138,8 @@
 	</script>
 </head>
 <body>
-	<div class="chart" style="width: 500px; height: 300px;" data-chart="cols"></div>
-	<div class="chart" style="width: 500px; height: 300px;" data-chart="lines"></div>
+	<div class="chart" style="width: 500px; height: 300px;" data-chart="column"></div>
+	<div class="chart" style="width: 500px; height: 300px;" data-chart="line"></div>
+	<div class="chart" style="width: 500px; height: 300px;" data-chart="area"></div>
 </body>
 </html>

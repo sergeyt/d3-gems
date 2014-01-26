@@ -40,10 +40,6 @@ d3.bar_chart = function(){
 			.attr("width", x1.rangeBand())
 			.attr("height", function(d) { return d.y < 0 ? y(d.y) - y0 : height - h0 - y(d.y); })
 			.style("stroke", "none")
-			.attr("title", function(d) {
-				var category = d3.internal.title(ctx.categories[d.x], ctx.xaxis);
-				return category + ": " + d3.internal.title(d.y, ctx.yaxis);
-			})
 			.each(ctx.tip)
 			.each(function (d, i) {
 				if (series.has(i)) return;
@@ -65,13 +61,12 @@ d3.bar_chart = function(){
 		}
 	}
 
-	renderer.init = function(def){
-		// TODO support function for def.categories
-		var categories = def.categories;
+	renderer.init = function(ctx){
+		var def = ctx.def;
 		var min = NaN, max = NaN;
 		var data = [];
 
-		for (var i = 0; i < categories.length; i++) {
+		for (var i = 0; i < ctx.categories.length; i++) {
 			var group = [];
 			for (var j = 0; j < def.series.length; j++) {
 				// TODO support objects with d, value fields
@@ -94,7 +89,6 @@ d3.bar_chart = function(){
 		}
 
 		return {
-			categories: categories,
 			data: data,
 			min: min,
 			max: max
