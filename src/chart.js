@@ -40,7 +40,8 @@ d3.chart = function() {
 			var ctx = {
 				def: def,
 				container: this,
-				categories: typeof def.categories == 'function' ? def.categories() : def.categories
+				categories: typeof def.categories == 'function' ? def.categories() : def.categories,
+				color: d3.scale.category10()
 			};
 
 			ctx.renderer = d3.chart.renderer(def);

@@ -32,7 +32,6 @@ d3.bar_chart = function(){
 		group.selectAll("rect.bar")
 			.data(function(d) { return d; })
 			.enter().append("rect")
-			.attr("class", function(d, i) { return "pal" + i; })
 			.attr("data-series", function(d, i) { return i; })
 			.classed("bar", true)
 			.attr("x", function(d, i) { return x1(i); })
@@ -40,6 +39,7 @@ d3.bar_chart = function(){
 			.attr("width", x1.rangeBand())
 			.attr("height", function(d) { return d.y < 0 ? y(d.y) - y0 : height - h0 - y(d.y); })
 			.style("stroke", "none")
+			.style("fill", function(d, i){ return ctx.color(i); })
 			.each(ctx.tip)
 			.each(function (d, i) {
 				if (series.has(i)) return;

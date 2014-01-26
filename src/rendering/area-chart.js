@@ -23,8 +23,8 @@ d3.area_chart = function(){
 			.each(ctx.tip);
 
 		g.append("path")
-			.attr("class", function (d, i) { return "pal" + i; })
 			.style("stroke", "none")
+			.style("fill", function(d, i){ return ctx.color(i); })
 			.attr("d", area);
 	}
 

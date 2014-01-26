@@ -21,7 +21,7 @@ d3.line_chart = function(){
 			.attr("data-series", function (d, i) { return i; });
 
 		g.append("path")
-			.attr("class", function (d, i) { return "pal" + i; })
+			.style("stroke", function(d, i){ return ctx.color(i); })
 			.style("fill", "none")
 			.attr("d", function (d) { return line(d); });
 
