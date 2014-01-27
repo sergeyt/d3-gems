@@ -12,7 +12,7 @@
     "d3",
     "d3js",
     "chart",
-	"widget"
+    "widget"
   ],
   "contributors": [
     "Sergey Todyshev <stodyshev@gmail.com>"
@@ -26,7 +26,6 @@
     "grunt-bump": "~0.0.7",
     "grunt-auto-release": "~0.0.2",
     "grunt-cli": "~0.1.11",
-    "expect.js": "~0.2.0",
     "lodash": "~2.4.1"
   },
   "scripts": {

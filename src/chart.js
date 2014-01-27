@@ -45,7 +45,7 @@ d3.chart = function() {
 			};
 
 			ctx.renderer = d3.chart.renderer(def);
-			ctx = _.extend(ctx, ctx.renderer.init(ctx));
+			ctx = $.extend(ctx, ctx.renderer.init(ctx));
 
 			// prepare axes factories
 			d3.chart.axes(ctx);
@@ -66,7 +66,7 @@ d3.chart = function() {
 				}
 			};
 
-			ctx = _.extend(ctx, {layout: layout});
+			ctx = $.extend(ctx, {layout: layout});
 
 			d3.select(this).selectAll('svg').remove();
 
