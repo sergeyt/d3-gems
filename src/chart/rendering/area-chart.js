@@ -20,7 +20,8 @@ d3.area_chart = function(){
 			.append("g")
 			.classed("area", true)
 			.attr("data-series", function (d, i) { return i; })
-			.each(ctx.tip);
+			.each(ctx.tip)
+			.each(d3.behavior.hightlight);
 
 		g.append("path")
 			.style("stroke", "none")

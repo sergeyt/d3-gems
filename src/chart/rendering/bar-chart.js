@@ -41,11 +41,7 @@ d3.bar_chart = function(){
 			.style("stroke", "none")
 			.style("fill", function(d, i){ return ctx.color(i); })
 			.each(ctx.tip)
-			.each(function (d, i) {
-				if (series.has(i)) return;
-				series.set(i, true);
-				// processLegend('fill').call(this, d, i);
-			});
+			.each(d3.behavior.hightlight);
 	}
 
 	function calc_group_width(ctx){
