@@ -26,7 +26,14 @@
     "grunt-bump": "~0.0.7",
     "grunt-auto-release": "~0.0.2",
     "grunt-cli": "~0.1.11",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-uglify": "~0.3.2",
+    "grunt-includes": "~0.4.0",
+    "grunt-contrib-csslint": "~0.2.0",
+    "grunt-contrib-cssmin": "~0.7.0"
   },
   "scripts": {
     "lint": "grunt lint",
