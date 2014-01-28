@@ -7,9 +7,13 @@
 	ns.chart.legend = function(ctx){
 		d3.select(ctx.container).selectAll('div.legend').remove();
 
+		var def = ctx.def.legend || {};
+		var position = (def.position || 'topright').toLowerCase();
+
 		var div = d3.select(ctx.container)
 			.append('div')
-			.classed('legend', true);
+			.classed('legend', true)
+			.attr('data-position', position);
 
 		var item = item_renderer(ctx);
 
@@ -23,7 +27,8 @@
 
 		return {
 			element: $e[0],
-			height: $e.outerHeight()
+			height: $e.outerHeight(),
+			position: position
 		};
 	};
 

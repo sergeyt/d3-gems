@@ -14,8 +14,7 @@
 			};
 		}
 
-		var element = $('<div>')
-			.addClass('title')
+		var element = $('<div class="title">')
 			.css('text-align', def.position || 'center')
 			.text(def.text)
 			.appendTo($(ctx.container));

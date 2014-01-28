@@ -21,7 +21,7 @@ $(function(){
 			"position": "center"
 		},
 		"legend": {
-			"position": "topcenter"
+			"position": "topright"
 		}
 	};
 
@@ -47,7 +47,7 @@ $(function(){
 			position: "center"
 		},
 		legend: {
-			position: "topcenter"
+			position: "bottomcenter"
 		}
 	};
 

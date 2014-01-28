@@ -1,6 +1,8 @@
 .chart .title {
 	stroke: none;
 	fill: black;
+	font-weight: bold;
+	font-size: larger;
 }
 
 .chart .plotarea {
@@ -18,6 +20,18 @@
 .chart .legend {
 	margin-left: 25px;
 	margin-right: 25px;
+}
+.chart .legend[data-position=topcenter] {
+	text-align: center;
+}
+.chart .legend[data-position=bottomcenter] {
+	text-align: center;
+}
+.chart .legend[data-position=topright] {
+	text-align: right;
+}
+.chart .legend[data-position=bottomright] {
+	text-align: right;
 }
 
 .chart .legend .item {

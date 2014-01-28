@@ -39,14 +39,13 @@ d3.chart = function() {
 		selection.each(function(def) {
 
 			var color = d3.scale.category10();
-			// TODO maybe usage of names would be better
+			// TODO maybe usage of names would be better?
 			color.domain(0, def.series.length - 1);
 
 			var ctx = {
 				def: def,
 				container: this,
 				categories: typeof def.categories == 'function' ? def.categories() : def.categories,
-				// TODO fix color scale domain
 				color: color
 			};
 
@@ -58,9 +57,8 @@ d3.chart = function() {
 
 			var title = ns.chart.title(ctx);
 			var legend = ns.chart.legend(ctx);
-
-			// TODO create div container for chart elements (title, legend, svg)
-			// TODO chart layout
+			var is_bottom_legend = legend.position.indexOf('bottom') == 0;
+			ctx.legend = legend;
 
 			var layout = {
 				width: width,
@@ -69,37 +67,15 @@ d3.chart = function() {
 					left: 25,
 					top: 25,
 					right: 25,
-					bottom: 25
+					bottom: 25 + (is_bottom_legend ? legend.height : 0)
 				}
 			};
 
 			ctx = $.extend(ctx, {layout: layout});
 
-			d3.select(this).selectAll('svg').remove();
+			ns.chart.render_body(ctx);
 
-			// append svg
-			var svg = d3.select(this).selectAll('svg')
-				.data([ctx]).enter()
-				.append('svg')
-				.style('display', 'block')
-				.attr('width', layout.width)
-				.attr('height', layout.height);
-
-			// init tip function
-			ctx.svg = svg;
-			ctx.tip = ns.chart.tip(ctx);
-
-			var plot = ns.chart.plot()
-				.width(layout.width - layout.margin.left - layout.margin.right)
-				.height(layout.height - layout.margin.top - layout.margin.bottom);
-
-			// append and render plotarea
-			svg.append('g')
-				.attr('transform', 'translate(' + layout.margin.left + ',' + layout.margin.top + ')')
-				.call(plot);
-
-			// TODO return svg container
-			return svg;
+			return this;
 		});
 	}
 
