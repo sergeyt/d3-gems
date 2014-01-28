@@ -57,7 +57,7 @@ d3.chart = function() {
 
 			var title = ns.chart.title(ctx);
 			var legend = ns.chart.legend(ctx);
-			var is_bottom_legend = legend.position.indexOf('bottom') == 0;
+			var is_bottom_legend = legend.position.indexOf('bottom') === 0;
 			ctx.legend = legend;
 
 			var layout = {

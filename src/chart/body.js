@@ -7,7 +7,7 @@
 	// renders svg - chart body
 	ns.chart.render_body = function(ctx){
 		var layout = ctx.layout;
-		var is_bottom_legend = ctx.legend.position.indexOf('bottom') == 0;
+		var is_bottom_legend = ctx.legend.position.indexOf('bottom') === 0;
 
 		d3.select(ctx.container).selectAll('svg').remove();
 

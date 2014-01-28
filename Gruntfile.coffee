@@ -49,6 +49,7 @@ module.exports = (grunt) ->
 				'box-sizing': false
 				'known-properties': false
 				'display-property-grouping': false
+				'unqualified-attributes': false
 			src: ['src/css/*.css']
 
 		clean:
