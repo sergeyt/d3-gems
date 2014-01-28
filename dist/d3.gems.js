@@ -1,4 +1,4 @@
-/*! d3-gems v0.0.2 28-01-2014 */
+/*! d3-gems v0.0.3 28-01-2014 */
 !function(window) {
     !function(ns) {
         ns.area_chart = function() {
