@@ -1,32 +1,33 @@
 // sample chart JSON definition
-//"chart3": {
-//	"type": "column",
-//	"subtype": "plain",
-//	"xaxis": {"majorTicks": "outside"},
-//	"yaxis": {
-//		"majorTicks": "outside",
-//		"scalar": true,
-//		"margin": true,
-//		"grid": { "major": true, "minor": false }
-//	},
-//	"categories": ["A", "B", "A"],
-//	"series": ["Revenue", "Units"],
-//	"data": [
-//		[90, 30, 95],
-//		[30, 25, 27]
-//	],
-//	"title": {
-//		"text": "Test Chart",
-//		"position": "center"
-//	},
-//	"legend": {
-//		"position": "topcenter"
-//	}
-//}
+/*
+{
+	type: "column",
+	axes: {
+		x: {majorTicks: "outside"},
+		y: {
+			majorTicks: "outside",
+			scalar: true,
+			margin: true,
+			grid: { major: true, minor: false }
+		}
+	},
+	categories: ["A", "B", "A"],
+	series: ["Revenue", "Units"],
+	data: [
+		[90, 30, 95],
+		[30, 25, 27]
+	],
+	title: {
+		text: "Test Chart",
+		position: "center"
+	},
+	legend: {
+		position: "topcenter"
+	}
+}
+*/
 
-// TODO legend, could be a separate HTML widget
-
-(function() {
+(function(ns) {
 
 // d3 chart plugin
 d3.chart = function() {
@@ -41,16 +42,17 @@ d3.chart = function() {
 				def: def,
 				container: this,
 				categories: typeof def.categories == 'function' ? def.categories() : def.categories,
+				// TODO fix color scale domain
 				color: d3.scale.category10()
 			};
 
-			ctx.renderer = d3.chart.renderer(def);
+			ctx.renderer = ns.chart.renderer(def);
 			ctx = $.extend(ctx, ctx.renderer.init(ctx));
 
 			// prepare axes factories
-			d3.chart.axes(ctx);
+			ns.axes.init(ctx);
 
-			var title = d3.chart.title(ctx);
+			var title = ns.chart.title(ctx);
 
 			// TODO create div container for chart elements (title, legend, svg)
 			// TODO chart layout
@@ -80,9 +82,9 @@ d3.chart = function() {
 
 			// init tip function
 			ctx.svg = svg;
-			ctx.tip = d3.chart.tip(ctx);
+			ctx.tip = ns.chart.tip(ctx);
 
-			var plot = d3.chart.plot()
+			var plot = ns.chart.plot()
 				.width(layout.width - layout.margin.left - layout.margin.right)
 				.height(layout.height - layout.margin.top - layout.margin.bottom);
 
@@ -111,4 +113,4 @@ d3.chart = function() {
 	return chart;
 };
 
-})();
+})(typeof f3 === 'undefined' ? window.f3 = {} : f3);

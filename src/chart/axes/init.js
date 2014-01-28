@@ -1,7 +1,11 @@
-(function(){
+(function(ns){
+
+	if (typeof ns.axes === 'undefined') {
+		ns.axes = {};
+	}
 
 	// initializes axes factories
-	d3.chart.axes = function(ctx){
+	ns.axes.init = function(ctx){
 
 		var def = ctx.def;
 		var xaxis = {
@@ -27,7 +31,7 @@
 	function create_xscale(ctx, xaxis){
 
 		if (xaxis.scalar || xaxis.is_time) {
-			return d3.chart.scalar_scale(ctx);
+			return ns.scale.scalar(ctx);
 		}
 
 		if (ctx.is_ordinal) {
@@ -39,20 +43,20 @@
 		}
 
 		return function(width) {
-			return d3.internal.ordinal_scale(width, ctx.categories.length);
+			return ns.scale.ordinal(width, ctx.categories.length);
 		};
 	}
 
 	function create_yscale(ctx){
-		var def = ctx.def;
+		var config = ctx.def.axes.y;
 
 		// taking into account axis min, max if specified
-		if (def.yaxis) {
-			if ($.isNumeric(def.yaxis.min)) {
-				ctx.min = def.yaxis.min;
+		if (config) {
+			if ($.isNumeric(config.min)) {
+				ctx.min = config.min;
 			}
-			if ($.isNumeric(def.yaxis.max)) {
-				ctx.max = def.yaxis.max;
+			if ($.isNumeric(config.max)) {
+				ctx.max = config.max;
 			}
 		}
 
@@ -88,4 +92,4 @@
 			.tickSize(3);
 	}
 
-})();
+})(typeof f3 === 'undefined' ? window.f3 = {} : f3);

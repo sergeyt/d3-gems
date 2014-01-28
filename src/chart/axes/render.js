@@ -1,7 +1,11 @@
 // axes rendering
-(function(){
+(function(ns){
 
-	d3.chart.render_axes = function(ctx) {
+	if (typeof ns.axes === 'undefined') {
+		ns.axes = {};
+	}
+
+	ns.axes.render = function(ctx) {
 
 		var def = ctx.def;
 		var bottom = ctx.height;
@@ -129,4 +133,4 @@
 		}
 	}
 
-})();
+})(typeof f3 === 'undefined' ? window.f3 = {} : f3);
