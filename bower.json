@@ -1,7 +1,7 @@
 {
   "name": "d3-gems",
   "version": "0.0.1",
-  "description": "D3.js widgets",
+  "description": "Collection of reusable widgets powered by d3.js",
   "main": "dist/d3.gems.js",
   "maintainers": [{
     "name": "Sergey Todyshev",

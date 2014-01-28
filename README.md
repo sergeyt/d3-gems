@@ -6,4 +6,4 @@
 
 [![NPM](https://nodei.co/npm/d3-gems.png?downloads=true&stars=true)](https://nodei.co/npm/d3-gems/)
 
-D3.js widgets
+Collection of reusable widgets powered by [d3.js](http://d3js.org/)
