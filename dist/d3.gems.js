@@ -1,4 +1,4 @@
-/*! d3-gems v0.0.1 28-01-2014 */
+/*! d3-gems v0.0.2 28-01-2014 */
 !function(window) {
     !function(ns) {
         ns.area_chart = function() {
@@ -74,35 +74,45 @@
             }, renderer;
         };
     }("undefined" == typeof f3 ? window.f3 = {} : f3), function(ns) {
+        "undefined" == typeof ns.chart && (ns.chart = {}), ns.chart.render_body = function(ctx) {
+            var layout = ctx.layout, is_bottom_legend = 0 === ctx.legend.position.indexOf("bottom");
+            d3.select(ctx.container).selectAll("svg").remove();
+            var selection = d3.select(ctx.container).selectAll("svg").data([ ctx ]).enter(), svg = is_bottom_legend ? selection.insert("svg", ".legend") : selection.append("svg");
+            svg.style("display", "block").attr("width", layout.width).attr("height", layout.height), 
+            ctx.svg = svg, ctx.tip = ns.chart.tip(ctx);
+            var plot = ns.chart.plot().width(layout.width - layout.margin.left - layout.margin.right).height(layout.height - layout.margin.top - layout.margin.bottom);
+            return svg.append("g").attr("transform", "translate(" + layout.margin.left + "," + layout.margin.top + ")").call(plot), 
+            svg[0];
+        };
+    }("undefined" == typeof f3 ? window.f3 = {} : f3), function(ns) {
         d3.chart = function() {
             function chart(selection) {
                 selection.each(function(def) {
+                    var color = d3.scale.category10();
+                    color.domain(0, def.series.length - 1);
                     var ctx = {
                         def: def,
                         container: this,
                         categories: "function" == typeof def.categories ? def.categories() : def.categories,
-                        color: d3.scale.category10()
+                        color: color
                     };
                     ctx.renderer = ns.chart.renderer(def), ctx = $.extend(ctx, ctx.renderer.init(ctx)), 
                     ns.axes.init(ctx);
-                    var title = ns.chart.title(ctx), layout = {
+                    var title = ns.chart.title(ctx), legend = ns.chart.legend(ctx), is_bottom_legend = 0 === legend.position.indexOf("bottom");
+                    ctx.legend = legend;
+                    var layout = {
                         width: width,
-                        height: height - title.height,
+                        height: height - title.height - legend.height,
                         margin: {
-                            left: 50,
-                            top: 50,
-                            right: 50,
-                            bottom: 50
+                            left: 25,
+                            top: 25,
+                            right: 25,
+                            bottom: 25 + (is_bottom_legend ? legend.height : 0)
                         }
                     };
-                    ctx = $.extend(ctx, {
+                    return ctx = $.extend(ctx, {
                         layout: layout
-                    }), d3.select(this).selectAll("svg").remove();
-                    var svg = d3.select(this).selectAll("svg").data([ ctx ]).enter().append("svg").style("display", "block").attr("width", layout.width).attr("height", layout.height);
-                    ctx.svg = svg, ctx.tip = ns.chart.tip(ctx);
-                    var plot = ns.chart.plot().width(layout.width - layout.margin.left - layout.margin.right).height(layout.height - layout.margin.top - layout.margin.bottom);
-                    return svg.append("g").attr("transform", "translate(" + layout.margin.left + "," + layout.margin.top + ")").call(plot), 
-                    svg;
+                    }), ns.chart.render_body(ctx), this;
                 });
             }
             var width = 300, height = 200;
@@ -182,6 +192,28 @@
             });
         };
     }(), function(ns) {
+        function item_renderer(ctx) {
+            return function() {
+                var elem = d3.select(this).classed("item", !0), nbsp = String.fromCharCode(160);
+                return elem.append("span").style("background-color", function(i) {
+                    return ctx.color(i);
+                }).text(nbsp + nbsp), elem.append("span").text(nbsp), elem.append("span").text(function(i) {
+                    return ctx.def.series[i];
+                }), elem;
+            };
+        }
+        "undefined" == typeof ns.chart && (ns.chart = {}), ns.chart.legend = function(ctx) {
+            d3.select(ctx.container).selectAll("div.legend").remove();
+            var def = ctx.def.legend || {}, position = (def.position || "topright").toLowerCase(), div = d3.select(ctx.container).append("div").classed("legend", !0).attr("data-position", position), item = item_renderer(ctx), range = d3.range(0, ctx.def.series.length);
+            div.selectAll("div.item").data(range).enter().append("div").each(item);
+            var $e = $(div[0]);
+            return {
+                element: $e[0],
+                height: $e.outerHeight(),
+                position: position
+            };
+        };
+    }("undefined" == typeof f3 ? window.f3 = {} : f3), function(ns) {
         ns.line_chart = function() {
             function renderer(ctx) {
                 function translate_x(d, i) {
@@ -418,7 +450,7 @@
                 element: null,
                 height: 0
             };
-            var element = $("<div>").addClass("title").css("text-align", def.position || "center").text(def.text).appendTo($(ctx.container));
+            var element = $('<div class="title">').css("text-align", def.position || "center").text(def.text).appendTo($(ctx.container));
             return {
                 element: element,
                 height: element.outerHeight()
