@@ -1,0 +1,22 @@
+body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	margin: auto;
+	padding-top: 40px;
+	width: 800px;
+}
+
+.chart {
+	font-size: 10pt;
+	padding: 10px;
+	margin: 10px;
+	width: 500px;
+	height: 300px;
+}
+
+.chart .xaxis, .chart .yaxis {
+	font-size: 7pt;
+}
+
+.outlined {
+	border: lightgrey solid 1pt;
+}

@@ -5,22 +5,7 @@
 	<title>Demo</title>
 
 	<link rel="stylesheet" type="text/css" href="../src/css/chart.css"/>
-
-	<style>
-
-		body {
-			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-			margin: auto;
-			padding-top: 40px;
-			width: 800px;
-		}
-
-		.chart { font-size: 10pt; padding: 10px; margin: 10px; }
-		.chart .xaxis { font-size: 7pt; }
-		.chart .yaxis { font-size: 7pt; }
-		.outlined { border: lightgrey solid 1pt; }
-
-	</style>
+	<link rel="stylesheet" type="text/css" href="demo.css"/>
 
 	<!-- third party libs -->
 	<script src="http://code.jquery.com/jquery-2.0.3.js"></script>
@@ -50,99 +35,9 @@
 	<script src="../src/chart/rendering/area-chart.js"></script>
 	<script src="../src/chart/jquery-plugin.js"></script>
 
-	<script type="text/javascript">
-		$(function(){
-			var column_chart = {
-				type: "column",
-				axes: {
-					x: {majorTicks: "outside"},
-					y: {
-						majorTicks: "outside",
-						scalar: true,
-						margin: true,
-						grid: { major: true, minor: false }
-					}
-				},
-				categories: ["A", "B", "A"],
-				series: ["Revenue", "Units"],
-				data: [
-					[90, 70, 95],
-					[30, 25, 27]
-				],
-				"title": {
-					"text": "Test Chart",
-					"position": "center"
-				},
-				"legend": {
-					"position": "topcenter"
-				}
-			};
-
-			var line_chart = {
-				type: "line",
-				axes: {
-					x: { majorTicks: "outside" },
-					y: {
-						majorTicks: "outside",
-						scalar: true,
-						margin: true,
-						grid: { major: true, minor: false }
-					}
-				},
-				categories: ["A", "B", "A"],
-				series: ["Revenue", "Units"],
-				data: [
-					[90, 70, 95],
-					[55, 80, 67]
-				],
-				title: {
-					text: "Test Chart",
-					position: "center"
-				},
-				legend: {
-					position: "topcenter"
-				}
-			};
-
-			var area_chart = {
-				type: "area",
-				axes: {
-					x: { majorTicks: "outside" },
-					y: {
-						majorTicks: "outside",
-						scalar: true,
-						margin: true,
-						grid: { major: true, minor: false }
-					}
-				},
-				categories: ["A", "B", "A"],
-				series: ["Revenue", "Units"],
-				data: [
-					[90, 70, 95],
-					[55, 80, 67]
-				],
-				title: {
-					text: "Test Chart",
-					position: "center"
-				},
-				legend: {
-					position: "topcenter"
-				}
-			};
-
-			window.__charts__ = {
-				'column': column_chart,
-				'line': line_chart,
-				'area': area_chart
-			};
-
-			$('.chart').chart();
-		});
-	</script>
+	<!-- demo scripts -->
+	<script type="text/javascript" src="demo.js"></script>
 </head>
 <body>
-	<div class="chart outlined" style="width: 500px; height: 300px;" data-chart="column"></div>
-	<div class="chart outlined" style="width: 500px; height: 300px;" data-chart="line"></div>
-	<div class="chart outlined" style="width: 500px; height: 300px;" data-chart="area"></div>
 </body>
 </html>
