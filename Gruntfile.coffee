@@ -94,6 +94,7 @@ module.exports = (grunt) ->
 		uglify:
 			debug:
 				options:
+					banner: '/*! <%= pkg.name %> v<%= pkg.version %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
 					mangle: false
 					beautify: true
 					preserveComments: 'some'
@@ -103,7 +104,7 @@ module.exports = (grunt) ->
 					'dist/d3.gems.js': 'dist/index.js'
 			min:
 				options:
-					banner: '/*! <%= pkg.name %> v<%= pkg.version %> <%= grunt.template.today("dd-mm-yyyy") %> */\n',
+					banner: '/*! <%= pkg.name %> v<%= pkg.version %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
 					mangle: false
 				files:
 					'dist/d3.gems.min.js': 'dist/index.js'
