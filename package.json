@@ -1,6 +1,6 @@
 {
   "name": "d3-gems",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "D3.js widgets",
   "author": "Sergey Todyshev <stodyshev@gmail.com>",
   "main": "index.js",
