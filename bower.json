@@ -3,13 +3,13 @@
   "version": "0.0.2",
   "description": "Collection of reusable widgets powered by d3.js",
   "main": "dist/d3.gems.js",
-  "maintainers": [{
-    "name": "Sergey Todyshev",
-    "email": "stodyshev@gmail.com"
-  }],
+  "maintainers": [
+    "Sergey Todyshev <stodyshev@gmail.com>"
+  ],
   "dependencies": {
-	"d3": "*",
-	"d3-tip": "*"
+    "d3": "*",
+    "d3-tip": "*",
+    "lodash": "~2.4.1"
   },
   "ignore": [
     "**/.*",
