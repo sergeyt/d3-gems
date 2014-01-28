@@ -38,12 +38,16 @@ d3.chart = function() {
 	function chart(selection) {
 		selection.each(function(def) {
 
+			var color = d3.scale.category10();
+			// TODO maybe usage of names would be better
+			color.domain(0, def.series.length - 1);
+
 			var ctx = {
 				def: def,
 				container: this,
 				categories: typeof def.categories == 'function' ? def.categories() : def.categories,
 				// TODO fix color scale domain
-				color: d3.scale.category10()
+				color: color
 			};
 
 			ctx.renderer = ns.chart.renderer(def);
@@ -53,18 +57,19 @@ d3.chart = function() {
 			ns.axes.init(ctx);
 
 			var title = ns.chart.title(ctx);
+			var legend = ns.chart.legend(ctx);
 
 			// TODO create div container for chart elements (title, legend, svg)
 			// TODO chart layout
 
 			var layout = {
 				width: width,
-				height: height - title.height,
+				height: height - title.height - legend.height,
 				margin: {
-					left: 50,
-					top: 50,
-					right: 50,
-					bottom: 50
+					left: 25,
+					top: 25,
+					right: 25,
+					bottom: 25
 				}
 			};
 

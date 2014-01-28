@@ -13,6 +13,18 @@
 	stroke-width: 2px;
 }
 
+/* legend styles */
+
+.chart .legend {
+	margin-left: 25px;
+	margin-right: 25px;
+}
+
+.chart .legend .item {
+	display: inline-block;
+	margin-right: 4px;
+}
+
 /* axis styles */
 
 .axis, .xaxis, .yaxis {
