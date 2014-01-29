@@ -1,4 +1,4 @@
-/*! d3-gems v0.0.3 28-01-2014 */
+/*! d3-gems v0.0.4 29-01-2014 */
 !function(window) {
     !function(ns) {
         ns.area_chart = function() {
@@ -24,11 +24,10 @@
         ns.bar_chart = function() {
             function renderer(ctx) {
                 function translate_x(d, i) {
-                    return ctx.axes.x.scalar ? x(ctx.categories[i]) - groupWidth / 2 : x(i);
+                    return ctx.axes.x.scalar ? x(ctx.categories[i]) - group_width / 2 : x(i);
                 }
                 {
-                    var def = ctx.def, x = ctx.scales.x, y = ctx.scales.y, groupWidth = calc_group_width(ctx), x1 = d3.scale.ordinal().domain(d3.range(0, def.series.length)).rangeRoundBands([ 0, groupWidth ]), min = ctx.min, data = (ctx.max, 
-                    ctx.data), height = ctx.height, y0 = y(0 > min ? 0 : min), h0 = height - y0, group = ctx.canvas.selectAll("g.colgroup").data(data).enter().append("g").attr("class", "colgroup").attr("transform", function(d, i) {
+                    var x = ctx.scales.x, y = ctx.scales.y, group_width = calc_group_width(ctx), x1 = d3.scale.ordinal().domain(d3.range(0, ctx.series.length)).rangeRoundBands([ 0, group_width ]), min = ctx.min, data = ctx.data, height = ctx.height, y0 = y(0 > min ? 0 : min), h0 = height - y0, group = ctx.canvas.selectAll("g.colgroup").data(data).enter().append("g").attr("class", "colgroup").attr("transform", function(d, i) {
                         return "translate(" + translate_x(d, i) + ",0)";
                     });
                     d3.map();
@@ -51,14 +50,14 @@
                 var x = ctx.scales.x, xaxis = ctx.axes.x;
                 if (xaxis.scalar) {
                     var axis = xaxis.create(x), ticks = ns.scale.ticks(x, axis), tickCount = xaxis.is_time ? ticks.length + 1 : ticks.length;
-                    return d3.internal.ordinal_scale(ctx.width, tickCount).rangeBand();
+                    return ns.scale.ordinal(ctx.width, tickCount).rangeBand();
                 }
                 return x.rangeBand();
             }
             return renderer.init = function(ctx) {
                 for (var def = ctx.def, min = 0/0, max = 0/0, data = [], i = 0; i < ctx.categories.length; i++) {
-                    for (var group = [], j = 0; j < def.series.length; j++) {
-                        var val = def.data[j][i];
+                    for (var group = [], j = 0; j < ctx.series.length; j++) {
+                        var key = ctx.series[j], val = def.series[key][i];
                         group.push({
                             x: i,
                             y: val
@@ -94,6 +93,7 @@
                         def: def,
                         container: this,
                         categories: "function" == typeof def.categories ? def.categories() : def.categories,
+                        series: Object.keys(def.series),
                         color: color
                     };
                     ctx.renderer = ns.chart.renderer(def), ctx = $.extend(ctx, ctx.renderer.init(ctx)), 
@@ -167,7 +167,7 @@
         "undefined" == typeof ns.axes && (ns.axes = {}), ns.axes.init = function(ctx) {
             var def = ctx.def, xaxis = {
                 ticks: null,
-                scalar: def.xaxis && !!def.xaxis.scalar,
+                scalar: def.axes && def.axes.x && !!def.axes.x.scalar,
                 is_time: ctx.categories.filter(_.isDate).length > 0,
                 create: create_xaxis
             }, yaxis = {
@@ -198,13 +198,13 @@
                 return elem.append("span").style("background-color", function(i) {
                     return ctx.color(i);
                 }).text(nbsp + nbsp), elem.append("span").text(nbsp), elem.append("span").text(function(i) {
-                    return ctx.def.series[i];
+                    return ctx.series[i];
                 }), elem;
             };
         }
         "undefined" == typeof ns.chart && (ns.chart = {}), ns.chart.legend = function(ctx) {
             d3.select(ctx.container).selectAll("div.legend").remove();
-            var def = ctx.def.legend || {}, position = (def.position || "topright").toLowerCase(), div = d3.select(ctx.container).append("div").classed("legend", !0).attr("data-position", position), item = item_renderer(ctx), range = d3.range(0, ctx.def.series.length);
+            var def = ctx.def.legend || {}, position = (def.position || "topright").toLowerCase(), div = d3.select(ctx.container).append("div").classed("legend", !0).attr("data-position", position), item = item_renderer(ctx), range = d3.range(0, ctx.series.length);
             div.selectAll("div.item").data(range).enter().append("div").each(item);
             var $e = $(div[0]);
             return {
@@ -228,14 +228,14 @@
                     return line(d);
                 }), ns.chart.points(ctx, g);
             }
-            function get_series(def, i) {
-                return def.data[i].map(function(pt) {
+            function get_series(ctx, i) {
+                return ctx.def.series[ctx.series[i]].map(function(pt) {
                     return pt;
                 });
             }
             return renderer.init = function(ctx) {
-                for (var def = ctx.def, min = 0/0, max = 0/0, data = [], i = 0; i < def.series.length; i++) {
-                    var series = get_series(def, i), e = d3.extent(series);
+                for (var min = (ctx.def, 0/0), max = 0/0, data = [], i = 0; i < ctx.series.length; i++) {
+                    var series = get_series(ctx, i), e = d3.extent(series);
                     isNaN(min) ? (min = e[0], max = e[1]) : (min = Math.min(min, e[0]), max = Math.max(max, e[1])), 
                     data.push(series);
                 }
@@ -436,7 +436,7 @@
                 return void 0 !== val ? val : parse($this.parent("g[data-series]"));
             }
             var tip = d3.tip().attr("class", "d3-tip").offset([ -10, 0 ]).html(function(d) {
-                var val = ns.title_attr(d.y, ctx.def.axes.y), text = void 0 === val ? "" : ns.format("<span style='color:red'>{0}</span>", val), series = series_index.call(this), label = ctx.def.series[series], sep = text ? ":" : "";
+                var val = ns.title_attr(d.y, ctx.def.axes.y), text = void 0 === val ? "" : ns.format("<span style='color:red'>{0}</span>", val), series = series_index.call(this), label = ctx.series[series], sep = text ? ":" : "";
                 return label = label ? ns.format("<strong>{0}{1}</strong> ", label, sep) : "", label + text;
             });
             return ctx.svg.call(tip), function() {
