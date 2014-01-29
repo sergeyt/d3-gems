@@ -30,12 +30,12 @@ var column_chart = {
 		Revenue: [90, 70, 95],
 		Units: [30, 25, 27]
 	},
-	"title": {
-		"text": "Test Chart",
-		"position": "center"
+	title: {
+		text: "Test Chart",
+		position: "center"
 	},
-	"legend": {
-		"position": "topright"
+	legend: {
+		position: "topright"
 	}
 };
 
