@@ -32,7 +32,7 @@
 				var text = val === undefined ? '' : ns.format("<span style='color:red'>{0}</span>", val);
 
 				var series = series_index.call(this);
-				var label = ctx.def.series[series];
+				var label = ctx.series[series];
 				var sep = text ? ':' : '';
 				label = label ? ns.format("<strong>{0}{1}</strong> ", label, sep) : '';
 

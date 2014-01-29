@@ -11,11 +11,10 @@ $(function(){
 			}
 		},
 		categories: ["A", "B", "A"],
-		series: ["Revenue", "Units"],
-		data: [
-			[90, 70, 95],
-			[30, 25, 27]
-		],
+		series: {
+			Revenue: [90, 70, 95],
+			Units: [30, 25, 27]
+		},
 		"title": {
 			"text": "Test Chart",
 			"position": "center"
@@ -37,11 +36,10 @@ $(function(){
 			}
 		},
 		categories: ["A", "B", "A"],
-		series: ["Revenue", "Units"],
-		data: [
-			[90, 70, 95],
-			[55, 80, 67]
-		],
+		series: {
+			Revenue: [90, 70, 95],
+			Units: [55, 80, 67]
+		},
 		title: {
 			text: "Test Chart",
 			position: "center"
@@ -63,11 +61,10 @@ $(function(){
 			}
 		},
 		categories: ["A", "B", "A"],
-		series: ["Revenue", "Units"],
-		data: [
-			[90, 70, 95],
-			[55, 80, 67]
-		],
+		series: {
+			Revenue: [90, 70, 95],
+			Units: [55, 80, 67]
+		},
 		title: {
 			text: "Test Chart",
 			position: "center"

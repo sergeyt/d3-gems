@@ -4,23 +4,22 @@
 
 		function renderer(ctx){
 
-			var def = ctx.def;
 			var x = ctx.scales.x;
 			var y = ctx.scales.y;
-			var groupWidth = calc_group_width(ctx);
+			var group_width = calc_group_width(ctx);
 
 			var x1 = d3.scale.ordinal()
-				.domain(d3.range(0, def.series.length))
-				.rangeRoundBands([0, groupWidth]);
+				.domain(d3.range(0, ctx.series.length))
+				.rangeRoundBands([0, group_width]);
 
-			var min = ctx.min, max = ctx.max;
+			var min = ctx.min;
 			var data = ctx.data;
 			var height = ctx.height;
 			var y0 = min < 0 ? y(0) : y(min);
 			var h0 = height - y0;
 
 			function translate_x(d, i) {
-				return ctx.axes.x.scalar ? x(ctx.categories[i]) - groupWidth/2 : x(i);
+				return ctx.axes.x.scalar ? x(ctx.categories[i]) - group_width/2 : x(i);
 			}
 
 			var group = ctx.canvas.selectAll("g.colgroup")
@@ -52,7 +51,7 @@
 				var axis = xaxis.create(x);
 				var ticks = ns.scale.ticks(x, axis);
 				var tickCount = xaxis.is_time ? ticks.length + 1 : ticks.length;
-				return d3.internal.ordinal_scale(ctx.width, tickCount).rangeBand();
+				return ns.scale.ordinal(ctx.width, tickCount).rangeBand();
 			} else {
 				return x.rangeBand();
 			}
@@ -65,9 +64,10 @@
 
 			for (var i = 0; i < ctx.categories.length; i++) {
 				var group = [];
-				for (var j = 0; j < def.series.length; j++) {
+				for (var j = 0; j < ctx.series.length; j++) {
 					// TODO support objects with d, value fields
-					var val = def.data[j][i];
+					var key = ctx.series[j];
+					var val = def.series[key][i];
 					group.push({ x: i, y: val });
 					if (isNaN(min)) {
 						min = val;

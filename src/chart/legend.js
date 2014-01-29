@@ -17,7 +17,7 @@
 
 		var item = item_renderer(ctx);
 
-		var range = d3.range(0, ctx.def.series.length);
+		var range = d3.range(0, ctx.series.length);
 		div.selectAll('div.item')
 			.data(range).enter()
 			.append('div')
@@ -47,7 +47,7 @@
 
 			elem.append('span')
 				.text(function(i){
-					return ctx.def.series[i];
+					return ctx.series[i];
 				});
 
 			return elem;

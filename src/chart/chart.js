@@ -46,6 +46,7 @@ d3.chart = function() {
 				def: def,
 				container: this,
 				categories: typeof def.categories == 'function' ? def.categories() : def.categories,
+				series: Object.keys(def.series),
 				color: color
 			};
 

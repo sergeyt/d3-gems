@@ -34,9 +34,9 @@
 			var def = ctx.def;
 			var min = NaN, max = NaN;
 			var data = [];
-			for (var i = 0; i < def.series.length; i++) {
+			for (var i = 0; i < ctx.series.length; i++) {
 
-				var series = get_series(def, i);
+				var series = get_series(ctx, i);
 
 				var e = d3.extent(series);
 				if (isNaN(min)) {
@@ -56,8 +56,8 @@
 			};
 		};
 
-		function get_series(def, i){
-			return def.data[i].map(function(pt) {
+		function get_series(ctx, i){
+			return ctx.def.series[ctx.series[i]].map(function(pt) {
 				// TODO support objects, functions
 				return pt;
 			});

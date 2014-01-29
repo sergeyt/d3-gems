@@ -10,7 +10,7 @@
 		var def = ctx.def;
 		var xaxis = {
 			ticks: null,
-			scalar: def.xaxis && !!def.xaxis.scalar,
+			scalar: def.axes && def.axes.x && !!def.axes.x.scalar,
 			is_time: ctx.categories.filter(_.isDate).length > 0,
 			create: create_xaxis
 		};
