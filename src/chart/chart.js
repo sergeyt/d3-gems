@@ -38,8 +38,8 @@ d3.chart = function() {
 	function chart(selection) {
 		selection.each(function(def) {
 
-			var series_keys = Array.isArray(def.series)
-				? Object.keys(def.series[0])
+			var series_keys = Array.isArray(def.series) ?
+				Object.keys(def.series[0])
 				: Object.keys(def.series);
 
 			var color = d3.scale.category10();
