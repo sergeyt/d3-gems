@@ -38,15 +38,19 @@ d3.chart = function() {
 	function chart(selection) {
 		selection.each(function(def) {
 
+			var series_keys = Array.isArray(def.series)
+				? Object.keys(def.series[0])
+				: Object.keys(def.series);
+
 			var color = d3.scale.category10();
 			// TODO maybe usage of names would be better?
-			color.domain(0, def.series.length - 1);
+			color.domain(0, series_keys.length - 1);
 
 			var ctx = {
 				def: def,
 				container: this,
 				categories: typeof def.categories == 'function' ? def.categories() : def.categories,
-				series: Object.keys(def.series),
+				series: series_keys,
 				color: color
 			};
 

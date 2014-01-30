@@ -8,7 +8,7 @@
 			var y = ctx.scales.y;
 
 			function translate_x(d, i) {
-				return ctx.axes.x.scalar ? x(ctx.categories[i]) : x(i);
+				return ctx.axes.x.scalar || ctx.axes.x.is_time ? x(ctx.categories[i]) : x(i);
 			}
 
 			var area = d3.svg.area()

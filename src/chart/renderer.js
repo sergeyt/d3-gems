@@ -13,6 +13,9 @@
 				return ns.line_chart();
 			case 'area':
 				return ns.area_chart();
+			case 'cfd':
+			case 'cumulative-flow-diagram':
+				return ns.cumulative_flow_diagram();
 			default:
 				return ns.bar_chart();
 		}
