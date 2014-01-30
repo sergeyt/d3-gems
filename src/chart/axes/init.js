@@ -67,9 +67,9 @@
 		};
 	}
 
-	function create_xaxis(ctx) {
+	function create_xaxis(ctx, scale) {
 		var axis = d3.svg.axis()
-			.scale(ctx.scales.x)
+			.scale(scale || ctx.scales.x)
 			.orient('bottom')
 			.tickSize(3);
 
@@ -85,9 +85,9 @@
 		return axis;
 	}
 
-	function create_yaxis(ctx) {
+	function create_yaxis(ctx, scale) {
 		return d3.svg.axis()
-			.scale(ctx.scales.y)
+			.scale(scale || ctx.scales.y)
 			.orient('left')
 			.tickSize(3);
 	}

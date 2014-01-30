@@ -36,7 +36,7 @@
 
 		function create(axis, width, vals) {
 			if (axis.is_time) {
-				return time_scale(width, vals);
+				return time_scale(axis, width, vals);
 			}
 			return d3.scale.linear()
 				.rangeRound([0, width])
@@ -49,7 +49,7 @@
 
 		return function(width) {
 			var axis_config = ctx.axes.x;
-			var scale = create(width, ctx.categories);
+			var scale = create(axis_config, width, ctx.categories);
 			if (ctx.is_ordinal || axis_config.is_time) {
 				var axis = axis_config.create(ctx, scale);
 				var vals = ns.scale.ticks(scale, axis);
