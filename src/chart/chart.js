@@ -42,9 +42,9 @@ d3.chart = function() {
 				Object.keys(def.series[0])
 				: Object.keys(def.series);
 
-			var color = d3.scale.category10();
-			// TODO maybe usage of names would be better?
-			color.domain(0, series_keys.length - 1);
+			var color = Array.isArray(def.palette) ?
+				d3.scale.ordinal().range(def.palette)
+				: default_palette(series_keys);
 
 			var ctx = {
 				def: def,
@@ -95,6 +95,13 @@ d3.chart = function() {
 		height = value;
 		return chart;
 	};
+
+	function default_palette(keys){
+		var color = keys.length <= 10 ? d3.scale.category10() : d3.scale.category20();
+		// TODO maybe usage of names would be better?
+		color.domain(0, keys.length - 1);
+		return color;
+	}
 
 	return chart;
 };
