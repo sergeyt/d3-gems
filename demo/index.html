@@ -4,11 +4,14 @@
 	<meta charset="utf-8"/>
 	<title>Demo</title>
 
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css"/>
 	<link rel="stylesheet" type="text/css" href="../src/css/chart.css"/>
 	<link rel="stylesheet" type="text/css" href="demo.css"/>
 
 	<!-- third party libs -->
 	<script src="http://code.jquery.com/jquery-2.0.3.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min.js"></script>
 	<script src="../lib/globalize.js"></script>
 	<script src="../lib/lodash/dist/lodash.js"></script>
 	<script src="../lib/d3/d3.js"></script>
@@ -40,7 +43,23 @@
 
 	<!-- demo scripts -->
 	<script type="text/javascript" src="demo.js"></script>
+	<script type="text/javascript" src="column-chart.js"></script>
+	<script type="text/javascript" src="line-chart.js"></script>
+	<script type="text/javascript" src="area-chart.js"></script>
+	<script type="text/javascript" src="cumulative-flow-diagram.js"></script>
 </head>
 <body>
+	<div class="toolbar">
+		<div class="btn-group">
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+				Select Chart <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu" data-bind="foreach: charts">
+				<li><a href="#" data-bind="text: title.text, click: function(){ $parent.select_chart(title.text); }"></a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="host">
+	</div>
 </body>
 </html>
