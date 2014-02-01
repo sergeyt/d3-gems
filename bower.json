@@ -1,6 +1,6 @@
 {
   "name": "d3-gems",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Collection of reusable widgets powered by d3.js",
   "main": "dist/d3.gems.js",
   "maintainers": [
@@ -12,8 +12,13 @@
     "lodash": "~2.4.1"
   },
   "ignore": [
-    "**/.*",
+    ".*",
+    "build",
+    "lib",
     "node_modules",
-    "components"
+    "src",
+    "Gruntfile.coffee",
+    "main.iml",
+    "package.json"
   ]
 }
