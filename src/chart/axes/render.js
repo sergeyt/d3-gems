@@ -5,35 +5,44 @@
 		ns.axes = {};
 	}
 
+	// extends axis config
+	function axis_config(config){
+		return $.extend({}, config, {
+			// TODO support functions
+			title: function() {
+				return config.title && config.title.text ? config.title.text : "";
+			},
+
+			format: function() {
+				if (config.format) {
+					return function(v) {
+						return Globalize.format(v, config.format);
+					};
+				}
+				return null;
+			}
+		});
+	}
+
+	// rendering of axes
 	ns.axes.render = function(ctx) {
 
 		var def = ctx.def;
 		var bottom = ctx.height;
 
-		// TODO support functions
-		function axis_title(axis) {
-			return axis && axis.title && axis.title.text ? axis.title.text : "";
-		}
-
-		function axis_format(axis) {
-			if (axis && axis.format) {
-				return function(v) {
-					return Globalize.format(v, axis.format);
-				};
-			}
-			return null;
-		}
+		var xconfig = axis_config(def.axes.x);
+		var yconfig = axis_config(def.axes.y);
 
 		var xaxis = ctx.axes.x.create(ctx);
 		var yaxis = ctx.axes.y.create(ctx);
 
 		xaxis.tickFormat(function(d, i) {
-			var f = axis_format(def.xaxis) || String;
-			var v = ctx.axes.x.scalar ? d : ctx.categories[i];
+			var f = xconfig.format() || String;
+			var v = xconfig.scalar ? d : ctx.categories[i];
 			return f(v);
 		});
 
-		var format = axis_format(def.yaxis);
+		var format = yconfig.format();
 		if (format) yaxis.tickFormat(format);
 
 		var xview = ctx.canvas.append('g')
@@ -48,7 +57,7 @@
 		arrange_category_axis(ctx, xaxis, xview);
 
 		// x axis title
-		var text = axis_title(def.xaxis);
+		var text = xconfig.title();
 		if (text) {
 			xview.append('text')
 				.attr('class', 'title')
@@ -60,7 +69,7 @@
 		}
 
 		// y axis title
-		text = axis_title(def.yaxis);
+		text = yconfig.title();
 		if (text) {
 			yview.append('text')
 				.attr('class', 'title')
@@ -96,7 +105,7 @@
 		var maxWidth = d3.max(bounds, function (r){ return r.width; });
 		var step;
 		if (ctx.axes.x.scalar) {
-			var ticks = d3_scaleTicks(scale, axis);
+			var ticks = ns.scale.ticks(scale, axis);
 			step = Math.abs(scale(ticks[1]) - scale(ticks[0]));
 		} else {
 			step = Math.abs(scale(1) - scale(0));

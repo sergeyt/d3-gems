@@ -13,7 +13,9 @@
 		var div = d3.select(ctx.container)
 			.append('div')
 			.classed('legend', true)
-			.attr('data-position', position);
+			.attr('data-position', position)
+			.style('margin-left', ctx.layout.margin.left)
+			.style('margin-right', ctx.layout.margin.right);
 
 		var item = item_renderer(ctx);
 

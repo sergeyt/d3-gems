@@ -6,19 +6,9 @@
 
 	// renders plot area with chart graphs
 	ns.chart.plot = function() {
-		// TODO auto size from container
-		var width = 300;
-		var height = 200;
 
 		function plot(element) {
 			element.each(function(ctx) {
-
-				ctx.width = width;
-				ctx.height = height;
-				ctx.scales = {
-					x: ctx.axes.x.scale(width),
-					y: ctx.axes.y.scale(height)
-				};
 
 				ctx.canvas = d3.select(this);
 
@@ -32,15 +22,17 @@
 			});
 		}
 
-		plot.width = function(value) {
-			if (!arguments.length) return width;
-			width = value;
-			return plot;
-		};
-
-		plot.height = function(value) {
-			if (!arguments.length) return height;
-			height = value;
+		plot.init = function(ctx){
+			var layout = ctx.layout;
+			// TODO set layout.plot.width, layout.plot.height
+			var width = layout.width - layout.margin.left - layout.margin.right;
+			var height = layout.height - layout.margin.top - layout.margin.bottom;
+			ctx.width = width;
+			ctx.height = height;
+			ctx.scales = {
+				x: ctx.axes.x.scale(width),
+				y: ctx.axes.y.scale(height)
+			};
 			return plot;
 		};
 

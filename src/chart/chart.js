@@ -38,6 +38,17 @@ d3.chart = function() {
 	function chart(selection) {
 		selection.each(function(def) {
 
+			// TODO defaults
+			if (!def.axes){
+				def.axes = {};
+			}
+			if (!def.axes.x){
+				def.axes.x = {};
+			}
+			if (!def.axes.y){
+				def.axes.y = {};
+			}
+
 			var series_keys = Array.isArray(def.series) ?
 				Object.keys(def.series[0])
 				: Object.keys(def.series);
@@ -60,23 +71,24 @@ d3.chart = function() {
 			// prepare axes factories
 			ns.axes.init(ctx);
 
-			var title = ns.chart.title(ctx);
-			var legend = ns.chart.legend(ctx);
-			var is_bottom_legend = legend.position.indexOf('bottom') === 0;
-			ctx.legend = legend;
-
-			var layout = {
+			ctx.layout = {
 				width: width,
-				height: height - title.height - legend.height,
+				height: height,
 				margin: {
-					left: 25,
-					top: 25,
-					right: 25,
-					bottom: 25 + (is_bottom_legend ? legend.height : 0)
+					left: 5,
+					top: 5,
+					right: 5,
+					bottom: 5
 				}
 			};
 
-			ctx = $.extend(ctx, {layout: layout});
+			// measure axes
+			ns.axes.measure(ctx);
+
+			var title = ns.chart.title(ctx);
+			var legend = ns.chart.legend(ctx);
+			ctx.legend = legend;
+			ctx.layout.height -= title.height + legend.height;
 
 			ns.chart.render_body(ctx);
 

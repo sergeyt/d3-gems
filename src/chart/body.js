@@ -24,9 +24,7 @@
 		ctx.svg = svg;
 		ctx.tip = ns.chart.tip(ctx);
 
-		var plot = ns.chart.plot()
-			.width(layout.width - layout.margin.left - layout.margin.right)
-			.height(layout.height - layout.margin.top - layout.margin.bottom);
+		var plot = ns.chart.plot().init(ctx);
 
 		// append and render plotarea
 		svg.append('g')

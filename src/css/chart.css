@@ -17,10 +17,6 @@
 
 /* legend styles */
 
-.chart .legend {
-	margin-left: 25px;
-	margin-right: 25px;
-}
 .chart .legend[data-position=topcenter] {
 	text-align: center;
 }
