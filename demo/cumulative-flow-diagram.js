@@ -10,19 +10,16 @@
 				grid: { major: true, minor: false }
 			}
 		},
-		// TODO support as hash object where each key is status, value is array of task counts per day
-		series: [
-			// TODO accumulate in renderer, each day has only new number of tasks in given status
-//			{ active: 10, doing: 0, review: 0, test: 0, done: 0},
-//			{ active: 8, doing: 2, review: 0, test: 0, done: 0},
-//			{ active: 6, doing: 2, review: 2, test: 0, done: 0},
-//			{ active: 5, doing: 2, review: 1, test: 2, done: 0},
-//			{ active: 4, doing: 2, review: 2, test: 0, done: 2},
-//			{ active: 3, doing: 2, review: 1, test: 2, done: 2},
-//			{ active: 2, doing: 1, review: 1, test: 2, done: 4},
-//			{ active: 0, doing: 2, review: 1, test: 1, done: 6},
-//			{ active: 0, doing: 0, review: 0, test: 2, done: 8},
-//			{ active: 0, doing: 0, review: 0, test: 0, done: 10}
+		// TODO accumulate in renderer, each day has only new number of tasks in given status
+		series: {
+			active: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+			doing: [0, 2, 4, 5, 7, 8, 9, 10, 10, 10],
+			review: [0, 0, 2, 3, 5, 6, 7, 8, 9, 10],
+			test: [0, 0, 0, 2, 2, 4, 6, 7, 9, 10],
+			done: [0, 0, 0, 0, 2, 2, 4, 6, 8, 10]
+		},
+		// alternate supported data format
+		series2: [
 			{ active: 10, doing: 0, review: 0, test: 0, done: 0},
 			{ active: 10, doing: 2, review: 0, test: 0, done: 0},
 			{ active: 10, doing: 4, review: 2, test: 0, done: 0},

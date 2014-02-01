@@ -30,7 +30,7 @@
 				});
 				def.series = hash;
 			} else {
-				count = Object.keys(def.series).length;
+				count = def.series[Object.keys(def.series)[0]].length;
 			}
 
 			// init dates if they are undefined
