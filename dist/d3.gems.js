@@ -1,10 +1,10 @@
-/*! d3-gems v0.0.4 29-01-2014 */
+/*! d3-gems v0.0.5 01-02-2014 */
 !function(window) {
     !function(ns) {
         ns.area_chart = function() {
             function renderer(ctx) {
                 function translate_x(d, i) {
-                    return x(ctx.axes.x.scalar ? ctx.categories[i] : i);
+                    return x(ctx.axes.x.scalar || ctx.axes.x.is_time ? ctx.categories[i] : i);
                 }
                 var x = ctx.scales.x, y = ctx.scales.y, area = d3.svg.area().x(translate_x).y0(ctx.height).y1(function(d) {
                     return y(d);
@@ -79,7 +79,7 @@
             var selection = d3.select(ctx.container).selectAll("svg").data([ ctx ]).enter(), svg = is_bottom_legend ? selection.insert("svg", ".legend") : selection.append("svg");
             svg.style("display", "block").attr("width", layout.width).attr("height", layout.height), 
             ctx.svg = svg, ctx.tip = ns.chart.tip(ctx);
-            var plot = ns.chart.plot().width(layout.width - layout.margin.left - layout.margin.right).height(layout.height - layout.margin.top - layout.margin.bottom);
+            var plot = ns.chart.plot().init(ctx);
             return svg.append("g").attr("transform", "translate(" + layout.margin.left + "," + layout.margin.top + ")").call(plot), 
             svg[0];
         };
@@ -87,33 +87,33 @@
         d3.chart = function() {
             function chart(selection) {
                 selection.each(function(def) {
-                    var color = d3.scale.category10();
-                    color.domain(0, def.series.length - 1);
-                    var ctx = {
+                    def.axes || (def.axes = {}), def.axes.x || (def.axes.x = {}), def.axes.y || (def.axes.y = {});
+                    var series_keys = Object.keys(Array.isArray(def.series) ? def.series[0] : def.series), color = Array.isArray(def.palette) ? d3.scale.ordinal().range(def.palette) : default_palette(series_keys), ctx = {
                         def: def,
                         container: this,
                         categories: "function" == typeof def.categories ? def.categories() : def.categories,
-                        series: Object.keys(def.series),
+                        series: series_keys,
                         color: color
                     };
                     ctx.renderer = ns.chart.renderer(def), ctx = $.extend(ctx, ctx.renderer.init(ctx)), 
-                    ns.axes.init(ctx);
-                    var title = ns.chart.title(ctx), legend = ns.chart.legend(ctx), is_bottom_legend = 0 === legend.position.indexOf("bottom");
-                    ctx.legend = legend;
-                    var layout = {
+                    ns.axes.init(ctx), ctx.layout = {
                         width: width,
-                        height: height - title.height - legend.height,
+                        height: height,
                         margin: {
-                            left: 25,
-                            top: 25,
-                            right: 25,
-                            bottom: 25 + (is_bottom_legend ? legend.height : 0)
+                            left: 5,
+                            top: 5,
+                            right: 5,
+                            bottom: 5
                         }
-                    };
-                    return ctx = $.extend(ctx, {
-                        layout: layout
-                    }), ns.chart.render_body(ctx), this;
+                    }, ns.axes.measure(ctx);
+                    var title = ns.chart.title(ctx), legend = ns.chart.legend(ctx);
+                    return ctx.legend = legend, ctx.layout.height -= title.height + legend.height, ns.chart.render_body(ctx), 
+                    this;
                 });
+            }
+            function default_palette(keys) {
+                var color = keys.length <= 10 ? d3.scale.category10() : d3.scale.category20();
+                return color.domain(0, keys.length - 1), color;
             }
             var width = 300, height = 200;
             return chart.width = function(value) {
@@ -132,6 +132,29 @@
                 var index = +i + 1;
                 return index < args.length ? args[index] : "";
             });
+        };
+    }("undefined" == typeof f3 ? window.f3 = {} : f3), function(ns) {
+        ns.cumulative_flow_diagram = function() {
+            function renderer(ctx) {
+                return area_chart(ctx);
+            }
+            var area_chart = ns.area_chart();
+            return renderer.init = function(ctx) {
+                var def = ctx.def, count = 0;
+                if (Array.isArray(def.series)) {
+                    count = def.series.length;
+                    var hash = {}, keys = null;
+                    def.series.forEach(function(it) {
+                        keys || (keys = Object.keys(it)), keys.forEach(function(key) {
+                            var val = it[key], arr = hash[key] || (hash[key] = []);
+                            arr.push(val);
+                        });
+                    }), def.series = hash;
+                } else count = def.series[Object.keys(def.series)[0]].length;
+                return ctx.categories || (ctx.categories = d3.range(1, count + 1), ctx.period = {
+                    step: "day"
+                }), area_chart.init(ctx);
+            }, renderer;
         };
     }("undefined" == typeof f3 ? window.f3 = {} : f3), function(ns) {
         ns.hightlight = function() {
@@ -156,13 +179,13 @@
                 return d3.scale.linear().range([ height, 0 ]).domain([ ctx.min, ctx.max ]);
             };
         }
-        function create_xaxis(ctx) {
-            var axis = d3.svg.axis().scale(ctx.scales.x).orient("bottom").tickSize(3), config = ctx.axes.x;
+        function create_xaxis(ctx, scale) {
+            var axis = d3.svg.axis().scale(scale || ctx.scales.x).orient("bottom").tickSize(3), config = ctx.axes.x;
             return null !== config.ticks && ($.isNumeric(config.ticks) ? axis.ticks(config.ticks) : $.isArray(config.ticks) && axis.ticks.apply(axis, config.ticks)), 
             axis;
         }
-        function create_yaxis(ctx) {
-            return d3.svg.axis().scale(ctx.scales.y).orient("left").tickSize(3);
+        function create_yaxis(ctx, scale) {
+            return d3.svg.axis().scale(scale || ctx.scales.y).orient("left").tickSize(3);
         }
         "undefined" == typeof ns.axes && (ns.axes = {}), ns.axes.init = function(ctx) {
             var def = ctx.def, xaxis = {
@@ -204,7 +227,7 @@
         }
         "undefined" == typeof ns.chart && (ns.chart = {}), ns.chart.legend = function(ctx) {
             d3.select(ctx.container).selectAll("div.legend").remove();
-            var def = ctx.def.legend || {}, position = (def.position || "topright").toLowerCase(), div = d3.select(ctx.container).append("div").classed("legend", !0).attr("data-position", position), item = item_renderer(ctx), range = d3.range(0, ctx.series.length);
+            var def = ctx.def.legend || {}, position = (def.position || "topright").toLowerCase(), div = d3.select(ctx.container).append("div").classed("legend", !0).attr("data-position", position).style("margin-left", ctx.layout.margin.left).style("margin-right", ctx.layout.margin.right), item = item_renderer(ctx), range = d3.range(0, ctx.series.length);
             div.selectAll("div.item").data(range).enter().append("div").each(item);
             var $e = $(div[0]);
             return {
@@ -248,20 +271,26 @@
             }, renderer;
         };
     }("undefined" == typeof f3 ? window.f3 = {} : f3), function(ns) {
+        ns.axes.measure = function(ctx) {
+            var layout = ctx.layout, svg = d3.select(ctx.container).append("svg").style("display", "block").attr("width", layout.width).attr("height", layout.height);
+            ns.chart.plot().init(ctx), ctx.canvas = svg.append("g");
+            var axes = ns.axes.render(ctx), label = axes.views.x.select("text").node();
+            layout.margin.top += d3.round(label.getBBox().height / 2), layout.margin.left += axes.width, 
+            layout.margin.bottom += axes.height, svg.remove();
+        };
+    }("undefined" == typeof f3 ? window.f3 = {} : f3), function(ns) {
         "undefined" == typeof ns.chart && (ns.chart = {}), ns.chart.plot = function() {
             function plot(element) {
                 element.each(function(ctx) {
-                    ctx.width = width, ctx.height = height, ctx.scales = {
-                        x: ctx.axes.x.scale(width),
-                        y: ctx.axes.y.scale(height)
-                    }, ctx.canvas = d3.select(this), ns.chart.plotarea(ctx), ctx.renderer(ctx), ns.axes.render(ctx);
+                    ctx.canvas = d3.select(this), ns.chart.plotarea(ctx), ctx.renderer(ctx), ns.axes.render(ctx);
                 });
             }
-            var width = 300, height = 200;
-            return plot.width = function(value) {
-                return arguments.length ? (width = value, plot) : width;
-            }, plot.height = function(value) {
-                return arguments.length ? (height = value, plot) : height;
+            return plot.init = function(ctx) {
+                var layout = ctx.layout, width = layout.width - layout.margin.left - layout.margin.right, height = layout.height - layout.margin.top - layout.margin.bottom;
+                return ctx.width = width, ctx.height = height, ctx.scales = {
+                    x: ctx.axes.x.scale(width),
+                    y: ctx.axes.y.scale(height)
+                }, plot;
             }, plot;
         };
     }("undefined" == typeof f3 ? window.f3 = {} : f3), function(ns) {
@@ -298,6 +327,18 @@
             });
         };
     }("undefined" == typeof f3 ? window.f3 = {} : f3), function(ns) {
+        function axis_config(config) {
+            return $.extend({}, config, {
+                title: function() {
+                    return config.title && config.title.text ? config.title.text : "";
+                },
+                format: function() {
+                    return config.format ? function(v) {
+                        return Globalize.format(v, config.format);
+                    } : null;
+                }
+            });
+        }
         function arrange_category_axis(ctx, axis, view) {
             var scale = ctx.scales.x, categories = ctx.categories, labels = view.selectAll("text");
             if (!(0 === labels.length || categories.length < 2)) {
@@ -307,7 +348,7 @@
                     return r.width;
                 });
                 if (ctx.axes.x.scalar) {
-                    var ticks = d3_scaleTicks(scale, axis);
+                    var ticks = ns.scale.ticks(scale, axis);
                     step = Math.abs(scale(ticks[1]) - scale(ticks[0]));
                 } else step = Math.abs(scale(1) - scale(0));
                 if (!(step >= maxWidth)) {
@@ -328,26 +369,18 @@
             n < text.length && wrapper.text(text.substr(0, n - 1) + "...");
         }
         "undefined" == typeof ns.axes && (ns.axes = {}), ns.axes.render = function(ctx) {
-            function axis_title(axis) {
-                return axis && axis.title && axis.title.text ? axis.title.text : "";
-            }
-            function axis_format(axis) {
-                return axis && axis.format ? function(v) {
-                    return Globalize.format(v, axis.format);
-                } : null;
-            }
-            var def = ctx.def, bottom = ctx.height, xaxis = ctx.axes.x.create(ctx), yaxis = ctx.axes.y.create(ctx);
+            var def = ctx.def, bottom = ctx.height, xconfig = axis_config(def.axes.x), yconfig = axis_config(def.axes.y), xaxis = ctx.axes.x.create(ctx), yaxis = ctx.axes.y.create(ctx);
             xaxis.tickFormat(function(d, i) {
-                var f = axis_format(def.xaxis) || String, v = ctx.axes.x.scalar ? d : ctx.categories[i];
+                var f = xconfig.format() || String, v = xconfig.scalar ? d : ctx.categories[i];
                 return f(v);
             });
-            var format = axis_format(def.yaxis);
+            var format = yconfig.format();
             format && yaxis.tickFormat(format);
             var xview = ctx.canvas.append("g").attr("class", "axis xaxis").attr("transform", "translate(0," + bottom + ")").call(xaxis), yview = ctx.canvas.append("g").attr("class", "axis yaxis").call(yaxis);
             arrange_category_axis(ctx, xaxis, xview);
-            var text = axis_title(def.xaxis);
+            var text = xconfig.title();
             text && xview.append("text").attr("class", "title").attr("transform", "translate(" + ctx.width + ",0)").attr("y", 6).attr("dy", "-0.75em").style("text-anchor", "end").text(text), 
-            text = axis_title(def.yaxis), text && yview.append("text").attr("class", "title").attr("transform", "rotate(-90)").attr("y", 3).attr("dy", ".75em").style("text-anchor", "end").text(text);
+            text = yconfig.title(), text && yview.append("text").attr("class", "title").attr("transform", "rotate(-90)").attr("y", 3).attr("dy", ".75em").style("text-anchor", "end").text(text);
             var xbox = xview.node().getBBox(), ybox = yview.node().getBBox();
             return {
                 width: ybox.width,
@@ -367,6 +400,10 @@
 
               case "area":
                 return ns.area_chart();
+
+              case "cfd":
+              case "cumulative-flow-diagram":
+                return ns.cumulative_flow_diagram();
 
               default:
                 return ns.bar_chart();
@@ -406,13 +443,13 @@
                 return d3.time.scale().rangeRound([ 0, width ]).domain(extent);
             }
             function create(axis, width, vals) {
-                return axis.is_time ? time_scale(width, vals) : d3.scale.linear().rangeRound([ 0, width ]).domain(d3.extent(vals));
+                return axis.is_time ? time_scale(axis, width, vals) : d3.scale.linear().rangeRound([ 0, width ]).domain(d3.extent(vals));
             }
             function add(axis, tick, interval) {
                 return axis.is_time ? new Date(Number(tick) + interval) : tick + interval;
             }
             return function(width) {
-                var axis_config = ctx.axes.x, scale = create(width, ctx.categories);
+                var axis_config = ctx.axes.x, scale = create(axis_config, width, ctx.categories);
                 if (ctx.is_ordinal || axis_config.is_time) {
                     var axis = axis_config.create(ctx, scale), vals = ns.scale.ticks(scale, axis), interval = vals[1] - vals[0], cats = ctx.categories.slice();
                     return cats.splice(0, 0, add(vals[0], .9 * -interval)), ctx.is_ordinal && cats.push(add(axis_config, vals[vals.length - 1], .8 * interval)), 
