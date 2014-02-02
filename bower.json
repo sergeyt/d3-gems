@@ -8,8 +8,7 @@
   ],
   "dependencies": {
     "d3": "*",
-    "d3-tip": "*",
-    "lodash": "~2.4.1"
+    "d3-tip": "*"
   },
   "ignore": [
     ".*",

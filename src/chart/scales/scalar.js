@@ -25,7 +25,7 @@
 
 		function time_scale(axis, width, vals) {
 			if (ctx.period) {
-				vals = vals.concat([ctx.period.min, ctx.period.max].filter(_.isDate));
+				vals = vals.concat([ctx.period.min, ctx.period.max].filter(ns.isDate));
 			}
 			axis.ticks = time_ticks(vals);
 			var extent = d3.extent(vals);

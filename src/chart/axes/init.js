@@ -11,7 +11,7 @@
 		var xaxis = {
 			ticks: null,
 			scalar: def.axes && def.axes.x && !!def.axes.x.scalar,
-			is_time: ctx.categories.filter(_.isDate).length > 0,
+			is_time: ctx.categories.filter(ns.isDate).length > 0,
 			create: create_xaxis
 		};
 

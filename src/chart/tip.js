@@ -29,12 +29,12 @@
 			.html(function(d) {
 				// TODO support arrays?
 				var val = ns.title_attr(d.y, ctx.def.axes.y);
-				var text = val === undefined ? '' : ns.format("<span style='color:red'>{0}</span>", val);
+				var text = val ? ns.sformat("<span style='color:red'>{0}</span>", val) : '';
 
 				var series = series_index.call(this);
 				var label = ctx.series[series];
 				var sep = text ? ':' : '';
-				label = label ? ns.format("<strong>{0}{1}</strong> ", label, sep) : '';
+				label = label ? ns.sformat("<strong>{0}{1}</strong> ", label, sep) : '';
 
 				return label + text;
 			});

@@ -16,7 +16,7 @@
 			format: function() {
 				if (config.format) {
 					return function(v) {
-						return Globalize.format(v, config.format);
+						return ns.format(v, config.format);
 					};
 				}
 				return null;
