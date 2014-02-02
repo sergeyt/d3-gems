@@ -1,4 +1,4 @@
-/*! d3-gems v0.0.6 01-02-2014 */
+/*! d3-gems v0.0.7 02-02-2014 */
 !function(window) {
     !function(ns) {
         ns.area_chart = function() {
@@ -123,10 +123,25 @@
             }, chart;
         };
     }("undefined" == typeof f3 ? window.f3 = {} : f3), function(ns) {
-        ns.title_attr = function(value, axis) {
+        var dateClass = "[object Date]";
+        ns.isDate = function(value) {
+            return value && "object" == typeof value && toString.call(value) == dateClass;
+        }, ns.title_attr = function(value, axis) {
             var format = axis ? axis.format || "g" : "g";
-            return Globalize.format(value, format);
-        }, ns.format = function() {
+            return ns.format(value, format);
+        }, ns.format = function(value, format) {
+            if (void 0 === value) return "";
+            if ("function" == typeof format) return format(value);
+            if ("number" == typeof value) {
+                var fn = d3.format(format);
+                return fn(value);
+            }
+            if (ns.isDate(value)) {
+                var f = d3.time.format(format || "%y-%m-%d");
+                return f(value);
+            }
+            return String(value);
+        }, ns.sformat = function() {
             var args = arguments;
             return args[0].replace(/{(\d+)}/g, function(m, i) {
                 var index = +i + 1;
@@ -191,7 +206,7 @@
             var def = ctx.def, xaxis = {
                 ticks: null,
                 scalar: def.axes && def.axes.x && !!def.axes.x.scalar,
-                is_time: ctx.categories.filter(_.isDate).length > 0,
+                is_time: ctx.categories.filter(ns.isDate).length > 0,
                 create: create_xaxis
             }, yaxis = {
                 scale: create_yscale(ctx),
@@ -334,7 +349,7 @@
                 },
                 format: function() {
                     return config.format ? function(v) {
-                        return Globalize.format(v, config.format);
+                        return ns.format(v, config.format);
                     } : null;
                 }
             });
@@ -437,7 +452,7 @@
                 return vals.length;
             }
             function time_scale(axis, width, vals) {
-                ctx.period && (vals = vals.concat([ ctx.period.min, ctx.period.max ].filter(_.isDate))), 
+                ctx.period && (vals = vals.concat([ ctx.period.min, ctx.period.max ].filter(ns.isDate))), 
                 axis.ticks = time_ticks(vals);
                 var extent = d3.extent(vals);
                 return d3.time.scale().rangeRound([ 0, width ]).domain(extent);
@@ -473,8 +488,9 @@
                 return void 0 !== val ? val : parse($this.parent("g[data-series]"));
             }
             var tip = d3.tip().attr("class", "d3-tip").offset([ -10, 0 ]).html(function(d) {
-                var val = ns.title_attr(d.y, ctx.def.axes.y), text = void 0 === val ? "" : ns.format("<span style='color:red'>{0}</span>", val), series = series_index.call(this), label = ctx.series[series], sep = text ? ":" : "";
-                return label = label ? ns.format("<strong>{0}{1}</strong> ", label, sep) : "", label + text;
+                var val = ns.title_attr(d.y, ctx.def.axes.y), text = val ? ns.sformat("<span style='color:red'>{0}</span>", val) : "", series = series_index.call(this), label = ctx.series[series], sep = text ? ":" : "";
+                return label = label ? ns.sformat("<strong>{0}{1}</strong> ", label, sep) : "", 
+                label + text;
             });
             return ctx.svg.call(tip), function() {
                 d3.select(this).on("mouseover", tip.show).on("mouseout", tip.hide);
