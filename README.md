@@ -7,6 +7,7 @@
 # d3-gems
 
 [![NPM version](https://badge.fury.io/js/d3-gems.png)](http://badge.fury.io/js/d3-gems)
+[![Bower version](https://badge.fury.io/bo/d3-gems.svg)](http://badge.fury.io/bo/d3-gems)
 
 [![NPM](https://nodei.co/npm/d3-gems.png?downloads=true&stars=true)](https://nodei.co/npm/d3-gems/)
 
