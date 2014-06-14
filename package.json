@@ -23,16 +23,16 @@
     "grunt-contrib-jshint": "~0.10",
     "grunt-coffeelint": "~0.0.10",
     "grunt-npm": "~0.0.2",
-    "grunt-bump": "~0.0.13",
+    "grunt-bump": "~0.0.14",
     "grunt-auto-release": "~0.0.6",
     "grunt-cli": "~0.1",
     "grunt-contrib-concat": "~0.4",
     "grunt-contrib-clean": "~0.5",
     "grunt-contrib-copy": "~0.5",
-    "grunt-contrib-uglify": "~0.4",
-    "grunt-includes": "~0.4.0",
+    "grunt-contrib-uglify": "~0.5",
+    "grunt-includes": "~0.4",
     "grunt-contrib-csslint": "~0.2",
-    "grunt-contrib-cssmin": "~0.9"
+    "grunt-contrib-cssmin": "~0.10"
   },
   "scripts": {
     "lint": "grunt lint",
