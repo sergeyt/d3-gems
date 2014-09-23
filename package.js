@@ -8,7 +8,7 @@ Package.describe({
 Package.onUse(function(api){
   var client = ["client"];
   api.use(['jquery', 'd3'], client);
-  api.addFiles('lib/d3-tip/index.js', client);
+  api.addFiles('dist/d3-tip.js', client);
   api.addFiles('dist/d3.gems.js', client);
   api.addFiles('dist/d3.gems.css', client);
 });
