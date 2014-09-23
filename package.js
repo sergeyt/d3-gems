@@ -7,6 +7,7 @@ Package.describe({
 
 Package.onUse(function(api){
   var client = ["client"];
+  api.versionsFrom("METEOR@0.9.0");
   api.use(['jquery', 'd3'], client);
   api.addFiles('dist/d3-tip.js', client);
   api.addFiles('dist/d3.gems.js', client);
