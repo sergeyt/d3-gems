@@ -1,6 +1,6 @@
 {
   "name": "d3-gems",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Collection of reusable widgets powered by d3.js",
   "author": "Sergey Todyshev <stodyshev@gmail.com>",
   "main": "index.js",
