@@ -26,12 +26,12 @@
     "grunt-bump": "~0.0.14",
     "grunt-auto-release": "~0.0.6",
     "grunt-cli": "~0.1",
-    "grunt-contrib-concat": "~0.4",
-    "grunt-contrib-clean": "~0.5",
-    "grunt-contrib-copy": "~0.5",
-    "grunt-contrib-uglify": "~0.5",
+    "grunt-contrib-concat": "~0.5",
+    "grunt-contrib-clean": "~0.6",
+    "grunt-contrib-copy": "~0.6",
+    "grunt-contrib-uglify": "~0.6",
     "grunt-includes": "~0.4",
-    "grunt-contrib-csslint": "~0.2",
+    "grunt-contrib-csslint": "~0.3",
     "grunt-contrib-cssmin": "~0.10"
   },
   "scripts": {
